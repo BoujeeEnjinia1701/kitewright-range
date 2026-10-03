@@ -1,0 +1,34 @@
+# Card metadata consumed by https://designmolecule.com
+name: Kitewright Range
+slug: kitewright-range
+repo: BoujeeEnjinia1701/kitewright-range         # GitHub repository, shown on every drawing and render
+area: Aerial robotics
+trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
+trl_target: 3
+design_state: constructable   # STANDARDS section 18; made constructable 2026-10-03 (KWR-DDR-002)
+trl_evidence:
+  - docs/01-problem.md
+  - docs/02-concept.md
+  - docs/03-requirements.md
+  - docs/04-calcs/01-sizing.md
+  - docs/04-calcs/sizing.py
+  - cad/src/model.py
+  - cad/step/kitewright-range-assembly.step
+  - cad/drawings/KWR-DWG-001.svg
+  - bom/bom.csv
+  - docs/05-build-plan.md
+  - docs/06-design-decisions.md
+  - docs/decisions/0001-trl2-review-decisions.md
+  - docs/decisions/0002-design-for-construction.md
+shortlisted: false
+pitch: >-
+  An all-electric quadplane frame for the Kitewright family that takes off vertically and cruises on a fixed wing for long surveys.
+problem: >-
+  Surveys of glacial lakes and snowpack in the high Himalaya need a drone that takes off from rough ground and still covers many kilometres in thin, cold air. Commercial fixed-wing VTOL drones that can do this are closed and cost more than most mountain agencies and research groups can field.
+budget_usd: 5000
+difficulty: 4  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [open-hardware, kitewright, drone, quadplane, vtol, high-altitude, glacial-lakes, survey, px4, ardupilot]
