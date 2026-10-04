@@ -3,7 +3,7 @@ doc_id: KWR-BLD-001
 title: Kitewright Range prototype build plan
 project: Kitewright Range
 doc_type: Build plan
-version: "0.1"
+version: "0.3"
 status: Draft
 date: '2026-10-03'
 author: Amish Chadha
@@ -13,13 +13,21 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: First build plan; design made constructable (KWR-DDR-002)
+- version: "0.2"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: "Round 2 requirement decisions carried in (KWR-DDR-003): 22 in propellers on 5215-class motors, booms 490 mm out and 1,142 mm long, 5.0 Ah cells in the packs"
+- version: "0.3"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: "Core power leads (8 AWG, four AS150 halves) added to the harness, following Kitewright Core decision 17 B; overview mass and cost updated"
 ---
 
 # Kitewright Range prototype build plan
 
 **Plan, not yet built.** How to build the first proof-of-concept prototype of the Kitewright Range quadplane, component by component. Building and testing to it is TRL 4 work. Decisions still to be made are kept in the design decisions register (`docs/06-design-decisions.md`), not here.
 
-> **Safety:** This aircraft has four 20 in lift propellers, a 14 in cruise propeller and two lithium-ion packs of about 290 Wh each. Propellers go on only at the propeller safety stop (section 6), the arming plug stays out whenever anyone handles the aircraft, and packs are charged only between 0 and 45 °C in a fire-resistant box.
+> **Safety:** This aircraft has four 22 in lift propellers, a 14 in cruise propeller and two lithium-ion packs of about 325 Wh each. Propellers go on only at the propeller safety stop (section 6), the arming plug stays out whenever anyone handles the aircraft, and packs are charged only between 0 and 45 °C in a fire-resistant box.
 
 ## 1. What you are building
 
@@ -27,22 +35,23 @@ revisions:
 
 *Figure 1. Every component, pulled apart and numbered in build order.*
 
-A 2.5 m span quadplane of about 10.6 kg with its 1 kg payload. Thirteen components are made: the fuselage box and hatch from plywood; the two wing panels, the stabiliser and the fin from hot-wire cut foam skinned in glass; the lift booms and tail boom cut from carbon tube; and the nose cone, tail socket, pylons, clamp caps, landing legs and tail mount printed in ASA. Everything else is bought: the lift and cruise motors with their ESCs and propellers, the servos, the pitot, the Kitewright Core avionics with its payload mount, and two ColdCell packs. The parts cost is estimated at USD 3,945 in the bill of materials.
+A 2.5 m span quadplane of about 11.1 kg with its 1 kg payload. Thirteen components are made: the fuselage box and hatch from plywood; the two wing panels, the stabiliser and the fin from hot-wire cut foam skinned in glass; the lift booms and tail boom cut from carbon tube; and the nose cone, tail socket, pylons, clamp caps, landing legs and tail mount printed in ASA. Everything else is bought: the lift and cruise motors with their ESCs and propellers, the servos, the pitot, the Kitewright Core avionics with its payload mount, and two ColdCell packs. The parts cost is estimated at USD 4,285 in the bill of materials.
 
 ## 2. What changed to make it buildable
 
 | Component | The concept had | The buildable design has | Why |
 | --- | --- | --- | --- |
 | Tail | Carried on the lift booms | A conventional tail on its own carbon boom behind the fuselage | Booms stay short enough for the 1.3 m cases; the rear rotor wash stays off the tail |
-| Lift booms | "Below the wing", no fixing | Printed pylons under the wing, through-bolted, with the booms held by clamp caps; booms 470 mm out from the centre line | The rotor discs sit 81 mm below the wing-top plane and 38 mm clear of the cruise propeller; the booms come off |
-| Lift motors | Positions not set | 506 mm ahead of and behind the balance point on each boom | The rotors lift through the balance point and clear the wing |
+| Lift booms | "Below the wing", no fixing | Printed pylons under the wing, through-bolted, with the booms held by clamp caps; booms 490 mm out from the centre line | The rotor discs sit 78 mm below the wing-top plane and 33 mm clear of the cruise propeller; the booms come off |
+| Lift motors | Positions not set | 531 mm ahead of and behind the balance point on each boom | The rotors lift through the balance point and clear the wing |
+| Lift propellers | 20 in propellers on 5212-class motors | 22 in propellers on 5215-class motors, the booms 50 mm longer and 20 mm further out | More hover thrust at 5,000 m with the disc clearances kept (decided by Amish, KWR-DDR-003) |
 | Cruise motor | Pusher or tractor | Tractor at the nose with a folding propeller | Nothing to clear behind; the blades fold for landing |
 | Wing | Removable halves | Two panels on a carbon joiner through the fuselage, one nylon bolt each | A stock tube and a field-proven fixing |
 | Fuselage | A pod | A plywood box with the packs either side of the joiner and the avionics in front | Packs lift out with the wing fitted; balance does not change with the payload |
 | Landing gear | None | Four faired legs on the booms | Stands level on rough ground with 83 mm under the payload |
 | Wiring | Not shown | A conduit in each wing to a plug at the root | Boom power disconnects with the wing |
 
-Every change is argued in decision record KWR-DDR-002.
+Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
 
 ## 3. Making the components
 
@@ -147,7 +156,7 @@ Every change is argued in decision record KWR-DDR-002.
 
 1. Hot-wire cut the core with root and tip templates, keeping the 30 % chord line straight and square to the root: it is the spar line.
 2. Rout a 22 mm channel on the spar line and bond in the spar, cut to 1,160 mm, flush with the root.
-3. Let two 3 mm plywood hardpoints, 60 x 50 mm, into the lower surface 470 mm from the aircraft centre line (400 mm from the root), one 40 mm ahead of the spar and one 60 mm behind it.
+3. Let two 3 mm plywood hardpoints, 60 x 50 mm, into the lower surface 490 mm from the aircraft centre line (420 mm from the root), one 40 mm ahead of the spar and one 60 mm behind it.
 4. Lay a 10 mm conduit from the hardpoints to the root, and cut the aileron servo bay behind the spar.
 5. Glass both sides in epoxy under vacuum or with peel ply.
 6. Glue on the 3 mm plywood root rib, drilled 20.5 mm on the spar line and fitted with an M5 threaded insert at 70 % chord.
@@ -200,12 +209,12 @@ Every change is argued in decision record KWR-DDR-002.
 
 *Figure 13. Lift boom making sketch (KWR-DWG-108).*
 
-**What it is and what it is made from.** Roll-wrapped carbon tube 25 mm outside, 23 mm inside, 1,092 mm long.
+**What it is and what it is made from.** Roll-wrapped carbon tube 25 mm outside, 23 mm inside, 1,142 mm long, cut from a 1,200 mm length.
 
 **How to make it.**
 
-1. Cut to 1,092 mm with a fine abrasive disc; seal the ends with thin epoxy.
-2. Mark the two motor centres 1,012 mm apart, 40 mm in from each end, and the pylon centre half way between them.
+1. Cut to 1,142 mm with a fine abrasive disc; seal the ends with thin epoxy.
+2. Mark the two motor centres 1,062 mm apart, 40 mm in from each end, and the pylon centre half way between them.
 3. Drill a 6 mm hole on the underside 150 mm inboard of each motor for the motor wires.
 4. Wrap the two clamp areas with one turn of glass tape.
 
@@ -305,15 +314,15 @@ Every change is argued in decision record KWR-DDR-002.
 | --- | --- | --- |
 | Wing spars and joiner | Pultruded carbon tube 22 x 20 mm; roll-wrapped carbon tube 20 x 16 mm, 640 mm | Cut the spars to 1,160 mm; check the joiner slides into the spars |
 | Wing bolts, pylon bolts | M5 x 40 nylon cap screws; M5 x 90 stainless cap screws with 15 mm washers | None |
-| Lift motor mounts | Aluminium mounts that clamp a 25 mm tube | Drill the top plate to the motor's bolt pattern |
+| Lift motor mounts | Aluminium mounts that clamp a 25 mm tube, top plate large enough for a 5215-class motor | Drill the top plate to the motor's bolt pattern |
 | Lift ESCs | 60 A, 6S, open firmware, rated to -20 °C | Extend the leads to the boom root plug |
-| Lift motors and propellers | 5212-class, 340 KV, 6S; 20 x 6.5 in carbon, two of each hand | Balance every propeller |
+| Lift motors and propellers | 5215-class, about 260 to 300 KV, 6S, maker thrust at least 7.0 kgf with a 22 in propeller; 22 in carbon, two of each hand | Balance every propeller |
 | Cruise motor, ESC and propeller | 4120-class, 400 KV with a 60 A ESC; 14 x 10 in folding blades on a 36 mm spinner | None |
 | Servos | Metal-gear digital, 20 mm class, rated to -20 °C | Fit in the servo bays with pushrods |
 | Heated pitot | 6 mm probe with heater and airspeed sensor | Glue the tube into the left wing hole |
 | Kitewright Core avionics and payload mount | To the Kitewright Core design | None |
-| ColdCell packs | Two 6S3P Li-ion packs, to the ColdCell design | None |
-| Harness | 10 and 12 AWG silicone wire, XT90 and XT60, root plugs, arming plug | Make to the Core wiring diagram |
+| ColdCell packs | Two 6S3P Li-ion packs of 5.0 Ah high-rate 21700 cells, to the ColdCell design | None |
+| Harness | 10 and 12 AWG silicone wire, XT90 and XT60, root plugs, arming plug; plus the Core power leads, 8 AWG silicone wire red and black 2 m and four AS150 halves (two pack inputs, two frame outputs) | Make to the Core wiring diagram; solder the Core leads to the Core's board pads |
 
 ## 4. Putting it together
 
@@ -339,7 +348,7 @@ Every change is argued in decision record KWR-DDR-002.
 
 ![Step 4](05-build-plan/step-04.png)
 
-*Figure 25. Step 4.* Fit the avionics tray between the firewall and the first bulkhead on soft mounts; run the harness to both battery bays, the wing root plugs and the tail.
+*Figure 25. Step 4.* Fit the avionics tray between the firewall and the first bulkhead on soft mounts; run the harness to both battery bays, the wing root plugs and the tail. Solder the four 8 AWG Core power leads (two pack inputs, two frame outputs, each with an AS150 half) to the Core's power board pads and tie them to its strain-relief bar, with the arming plug out and no pack in the aircraft.
 
 ### Step 5: payload mount under the fuselage
 
@@ -453,4 +462,4 @@ These checks are listed here; a TRL 4 test report records them.
 - Pictures: `cad/src/build_plan_media.py`, written to `docs/05-build-plan/`.
 - Calculations: `docs/04-calcs/01-sizing.md` (KWR-CAL-001) and `docs/04-calcs/sizing.py`.
 - Bill of materials: `bom/bom.csv`.
-- Decisions: `docs/decisions/0001-trl2-review-decisions.md`, `docs/decisions/0002-design-for-construction.md` and `docs/06-design-decisions.md`.
+- Decisions: `docs/decisions/0001-trl2-review-decisions.md`, `docs/decisions/0002-design-for-construction.md`, `docs/decisions/0003-requirement-decisions-round2.md` and `docs/06-design-decisions.md`.

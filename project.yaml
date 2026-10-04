@@ -20,6 +20,7 @@ trl_evidence:
   - docs/06-design-decisions.md
   - docs/decisions/0001-trl2-review-decisions.md
   - docs/decisions/0002-design-for-construction.md
+  - docs/decisions/0003-requirement-decisions-round2.md
 shortlisted: false
 pitch: >-
   An all-electric quadplane frame for the Kitewright family that takes off vertically and cruises on a fixed wing for long surveys.

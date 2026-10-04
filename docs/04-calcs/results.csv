@@ -1,100 +1,79 @@
 quantity,value
-mtow_kg,10.58
-empty_kg,9.578
+mtow_kg,11.09
+empty_kg,10.09
 x_cg_mm,415.4
 x_cg_target_mm,414.4
-cg_frac_mac,0.2836
+cg_frac_mac,0.2835
 span_m,2.5
 wing_area_m2,0.7042
 aspect_ratio,8.875
-wing_loading_n_m2,147.4
-cd0,0.07726
-cda_m2,0.0544
-ld_cruise,7.539
-v_stall_ms,17.55
-v_cruise_ms,21.94
+wing_loading_n_m2,154.5
+cd0,0.07888
+cda_m2,0.05555
+ld_cruise,7.43
+v_stall_ms,17.97
+v_cruise_ms,22.47
 cl_cruise,0.832
-p_cruise_aero_w,302
-p_cruise_elec_w,584.5
-hover_power_w,1815
-hover_current_a,84.05
-disc_loading_n_m2,128
-thrust_max_5000_n,136.7
-hover_margin,0.3178
-sl_hover_thrust_frac,0.4559
-pack_wh,291.6
-nominal_wh,583.2
-usable_wh,498.6
-available_wh,398.9
-e_vtol_wh,75.65
-e_climb_wh,20.87
-cruise_wh,302.4
-endurance_min,31.04
-range_km,40.86
-spar_sf,2.887
-joiner_sf,4.039
-boom_sf,10.77
-tail_sf,5.958
-root_moment_nm,68.88
-boom_moment_nm,24.24
-pylon_bolt_n,344.8
-pylon_bolt_sf,12.47
-disc_below_wing_top_mm,80.95
-lift_cruise_disc_gap_mm,38.35
-rear_disc_to_te_mm,43.64
+p_cruise_aero_w,329.1
+p_cruise_elec_w,633.6
+hover_power_w,1772
+hover_current_a,82.05
+disc_loading_n_m2,110.9
+thrust_max_5000_n,165.1
+hover_margin,0.5172
+sl_hover_thrust_frac,0.396
+pack_wh,324
+nominal_wh,648
+usable_wh,554
+available_wh,443.2
+e_vtol_wh,73.85
+e_climb_wh,21.88
+cruise_wh,347.5
+endurance_min,32.91
+range_km,44.36
+spar_sf,2.753
+joiner_sf,3.852
+boom_sf,8.425
+tail_sf,5.681
+root_moment_nm,72.23
+boom_moment_nm,30.98
+pylon_bolt_n,433.5
+pylon_bolt_sf,9.919
+disc_below_wing_top_mm,77.87
+lift_cruise_disc_gap_mm,32.84
+rear_disc_to_te_mm,43.95
 vh,0.5341
 vv,0.02483
-boom_len_mm,1092
+boom_len_mm,1142
 panel_len_mm,1205
-cost_usd,3945
-cost_vs_target_usd,-1055
-pack_current_a_per_cell,14.01
-option B: two 6S4P packs: mass,11.46
-option B: two 6S4P packs: endurance,38.89
-option B: two 6S4P packs: range,53.28
-option B: two 6S4P packs: margin,0.2166
-option B: two 6S4P packs: cost,4135
-option B: two 6S4P packs: dcost,190
-option B: two 6S4P packs: dmass,0.88
-option C: two 6S3P packs of 5.0 Ah cells: mass,10.58
-option C: two 6S3P packs of 5.0 Ah cells: endurance,35.59
-option C: two 6S3P packs of 5.0 Ah cells: range,46.85
-option C: two 6S3P packs of 5.0 Ah cells: margin,0.3178
-option C: two 6S3P packs of 5.0 Ah cells: cost,4065
-option C: two 6S3P packs of 5.0 Ah cells: dcost,120
-option C: two 6S3P packs of 5.0 Ah cells: dmass,0
-option D: one 6S3P pack: mass,9.178
-option D: one 6S3P pack: endurance,15.04
-option D: one 6S3P pack: range,18.43
-option D: one 6S3P pack: margin,0.5188
-option D: one 6S3P pack: cost,3655
-option D: one 6S3P pack: dcost,-290
-option D: one 6S3P pack: dmass,-1.4
-option E: moulded carbon airframe: mass,9.892
-option E: moulded carbon airframe: endurance,35.06
-option E: moulded carbon airframe: range,44.63
-option E: moulded carbon airframe: margin,0.4092
-option E: moulded carbon airframe: cost,5145
-option E: moulded carbon airframe: dcost,1200
-option E: moulded carbon airframe: dmass,-0.6865
-option F: moulded carbon airframe and two 6S4P packs: mass,10.77
-option F: moulded carbon airframe and two 6S4P packs: endurance,43.32
-option F: moulded carbon airframe and two 6S4P packs: range,57.54
-option F: moulded carbon airframe and two 6S4P packs: margin,0.2941
-option F: moulded carbon airframe and two 6S4P packs: cost,5335
-option F: moulded carbon airframe and two 6S4P packs: dcost,1390
-option F: moulded carbon airframe and two 6S4P packs: dmass,0.1935
-option G: 22 in propellers on 5215-class motors: mass,10.98
-option G: 22 in propellers on 5215-class motors: endurance,29.26
-option G: 22 in propellers on 5215-class motors: range,39.24
-option G: 22 in propellers on 5215-class motors: margin,0.5331
-option G: 22 in propellers on 5215-class motors: cost,4105
-option G: 22 in propellers on 5215-class motors: dcost,160
-option G: 22 in propellers on 5215-class motors: dmass,0.4
-option H: 22 in propellers and 5.0 Ah cells: mass,10.98
-option H: 22 in propellers and 5.0 Ah cells: endurance,33.52
-option H: 22 in propellers and 5.0 Ah cells: range,44.95
-option H: 22 in propellers and 5.0 Ah cells: margin,0.5331
-option H: 22 in propellers and 5.0 Ah cells: cost,4225
-option H: 22 in propellers and 5.0 Ah cells: dcost,280
-option H: 22 in propellers and 5.0 Ah cells: dmass,0.4
+cost_usd,4285
+cost_vs_target_usd,-715
+pack_current_a_per_cell,13.68
+option A: design as decided: mass,11.09
+option A: design as decided: endurance,32.91
+option A: design as decided: range,44.36
+option A: design as decided: margin,0.5172
+option A: design as decided: cost,4285
+option A: design as decided: dcost,0
+option A: design as decided: dmass,0
+option B: two 6S4P packs of 5.0 Ah cells: mass,11.97
+option B: two 6S4P packs of 5.0 Ah cells: endurance,41.19
+option B: two 6S4P packs of 5.0 Ah cells: range,57.68
+option B: two 6S4P packs of 5.0 Ah cells: margin,0.4057
+option B: two 6S4P packs of 5.0 Ah cells: cost,4518
+option B: two 6S4P packs of 5.0 Ah cells: dcost,233.3
+option B: two 6S4P packs of 5.0 Ah cells: dmass,0.88
+option C: moulded carbon airframe: mass,10.41
+option C: moulded carbon airframe: endurance,36.84
+option C: moulded carbon airframe: range,48.1
+option C: moulded carbon airframe: margin,0.6172
+option C: moulded carbon airframe: cost,5485
+option C: moulded carbon airframe: dcost,1200
+option C: moulded carbon airframe: dmass,-0.6862
+option D: moulded carbon airframe and two 6S4P packs of 5.0 Ah cells: mass,11.29
+option D: moulded carbon airframe and two 6S4P packs of 5.0 Ah cells: endurance,45.55
+option D: moulded carbon airframe and two 6S4P packs of 5.0 Ah cells: range,61.94
+option D: moulded carbon airframe and two 6S4P packs of 5.0 Ah cells: margin,0.4912
+option D: moulded carbon airframe and two 6S4P packs of 5.0 Ah cells: cost,5718
+option D: moulded carbon airframe and two 6S4P packs of 5.0 Ah cells: dcost,1433
+option D: moulded carbon airframe and two 6S4P packs of 5.0 Ah cells: dmass,0.1938

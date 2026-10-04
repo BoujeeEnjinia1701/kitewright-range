@@ -4,13 +4,13 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/kitewright-range/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/kitewright-range/actions/workflows/reuse.yml)
 
-**Area:** Aerial robotics · **TRL:** 3 of 9 (proof of concept on paper; design constructable) · **Value-engineering target:** USD 5,000; estimated cost USD 3,945 (USD 1,055 under) · **Difficulty:** 4 of 5
+**Area:** Aerial robotics · **TRL:** 3 of 9 (proof of concept on paper; design constructable) · **Value-engineering target:** USD 5,000; estimated cost USD 4,285 (USD 715 under) · **Difficulty:** 4 of 5
 
 An all-electric quadplane frame for the Kitewright family that takes off vertically and cruises on a fixed wing for long surveys.
 
 [Problem](docs/01-problem.md) · [Precis](docs/02-concept.md) · [Requirements](docs/03-requirements.md) · [Calculations](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [General arrangement](cad/drawings/KWR-DWG-001.png) · [3D viewer](media/viewer.html)
 
-CONCEPT, NOT FOR FABRICATION. On paper (KWR-CAL-001): 2.5 m span, 10.6 kg with a 1 kg payload, 31.8 % hover thrust margin at 5,000 m, and 31 min and 40.9 km on the wing with a 20 % reserve. Endurance and take-off mass miss their targets and are open decisions.
+CONCEPT, NOT FOR FABRICATION. On paper (KWR-CAL-001): 2.5 m span, 11.1 kg with a 1 kg payload, 51.7 % hover thrust margin at 5,000 m, and 32.9 min and 44.4 km on the wing with a 20 % reserve. Endurance and take-off mass still miss their targets; the endurance shortfall is an open decision.
 
 ## Concept rationale
 
@@ -67,9 +67,9 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [d
 ![Concept overview with a 1.75 m person for scale](media/hero.png)
 
 - Two-piece foam and glass wing, 2.5 m span, on a carbon joiner through a lite-ply fuselage
-- Four fixed 20 in lift rotors on carbon booms, hung on printed pylons below the wing
+- Four fixed 22 in lift rotors on 5215-class motors on carbon booms, hung on printed pylons below the wing
 - Tractor cruise motor with a folding propeller at the nose; conventional tail on a carbon boom
-- Kitewright Core avionics and payload mount; two ColdCell 6S Li-ion packs (583 Wh)
+- Kitewright Core avionics and payload mount; two ColdCell 6S Li-ion packs of 5.0 Ah cells (648 Wh)
 - Four faired landing legs; heated pitot
 
 ## Building the prototype

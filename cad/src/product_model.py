@@ -3,7 +3,7 @@
 Finished-product look for photoreal renders: white glassed foam wing and tail with teal ailerons, a light
 grey glassed fuselage with its hatch, teal printed nose cone, pylons, tail mount and clamps, charcoal
 carbon booms, spars and tail boom, orange lift motors with aluminium tube mounts, tapered black
-20 in lift propellers parked fore and aft, the folding cruise propeller at the nose, the GNSS mast,
+22 in lift propellers parked fore and aft, the folding cruise propeller at the nose, the GNSS mast,
 the heated pitot on the left wing, faired landing legs with rubber feet and the 1 kg payload under
 the fuselage. Inside (exploded view): the two ColdCell packs, the Kitewright Core avionics and the
 wing joiner. Context: a 1.75 m standing mannequin beside the right wing tip, behind the aircraft as

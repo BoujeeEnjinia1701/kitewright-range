@@ -14,6 +14,8 @@ from build_views import Part, overview, step, joint, component_sheet  # noqa: E4
 from model import PARAMS as P, build_parts, derived, box, chord, le_x  # noqa: E402
 
 DATE = "2026-10-03"
+# making sketches changed by the round 2 requirement decisions (KWR-DDR-003)
+REV_P2 = {"KWR-DWG-105", "KWR-DWG-106", "KWR-DWG-108", "KWR-DWG-109"}
 OUT = ROOT / "docs" / "05-build-plan"
 D = derived(P)
 m = build_parts(P)
@@ -108,7 +110,7 @@ def do_sheets():
             f"Hot-wire cut NACA 2412 cores: root chord {P['root_chord']:.0f}, tip chord {P['tip_chord']:.0f}, panel {P['panel_span']:,.0f} long.",
             "Keep the 30 % chord line straight: it is the spar line, square to the root rib.",
             f"Rout a 22 channel on the spar line and bond in the carbon spar, {P['panel_span'] - 20:,.0f} long, flush with the root.",
-            "Set two 3 mm ply hardpoints in the lower skin over the boom pylon, 470 out from the centre line.",
+            f"Set two 3 mm ply hardpoints in the lower skin over the boom pylon, {P['boom_y']:.0f} out from the centre line.",
             "Lay a 10 mm conduit from the pylon to the root for the boom wires; servo bay behind the spar.",
             "Glass both sides; glue the 3 mm ply root rib with the 20 joiner hole and an M5 insert at 70 % chord.",
             f"Cut the aileron free at 75 % chord from {P['aileron_y'][0]:.0f} to {P['aileron_y'][1]:.0f} out; hinge on tape.",
@@ -116,12 +118,12 @@ def do_sheets():
         ], [part("fus", "", "#ccc"), part("joiner", "", "#ccc"), part("pylon_r", "", "#ccc")],
          Compound([m["wing_r"], m["ail_r"], m["spar_r"]])),
         ("KWR-DWG-106", "pylon_r", "Boom pylon (make 2)", "Printed ASA, 1.2 mm walls, 10 % gyroid infill", [
-            f"Block {P['pylon_x'][1] - P['pylon_x'][0]:.0f} long, {P['pylon_w']:.0f} wide; top shaped to the wing lower skin at 470 out.",
+            f"Block {P['pylon_x'][1] - P['pylon_x'][0]:.0f} long, {P['pylon_w']:.0f} wide; top shaped to the wing lower skin at {P['boom_y']:.0f} out.",
             "Saddle on the bottom fits the 25 boom; the boom centre is 115 below the wing chord line.",
             f"Two 5.5 holes on the centre line, {P['pylon_bolts_x'][0] - P['pylon_x'][0]:.0f} and {P['pylon_bolts_x'][1] - P['pylon_x'][0]:.0f} from the front, with M5 nut pockets.",
             "Four M4 heat-set inserts in the underside for the clamp caps, 17 either side of the centre line.",
             "Print standing on its side; bond to the wing hardpoint with thickened epoxy, then fit the bolts.",
-            "The pylon puts the rotor discs 81 below the wing-top plane: do not shorten it.",
+            f"The pylon puts the rotor discs {D['disc_below_wing_top']:.0f} below the wing-top plane: do not shorten it.",
         ], [part("wing_r", "", "#ccc"), part("boom_r", "", "#ccc")]),
         ("KWR-DWG-107", None, "Boom clamp cap (make 4)", "Printed ASA, solid", [
             f"Cap {P['clamp_x'][0][1] - P['clamp_x'][0][0]:.0f} long, {P['pylon_w']:.0f} wide, half-round 25 seat, 6 under the boom.",
@@ -170,7 +172,11 @@ def do_sheets():
         dwg, key, title, mat, notes, nb = row[:6]
         shape = row[6] if len(row) > 6 else m[key]
         pt = Part(title, shape, "#0F766E")
-        component_sheet(pt, nb, "Kitewright Range", dwg, f"Kitewright Range: {title.lower()} making sketch", mat, notes, DATE)
+        kw = {}
+        if dwg in REV_P2:
+            kw = dict(rev="P2", revisions=[("P1", "Making sketch for the prototype build plan", "2026-10-03", "AC"),
+                                           ("P2", "KWR-DDR-003: 22 in propellers, booms 490 out and 1,142 long", DATE, "AC")])
+        component_sheet(pt, nb, "Kitewright Range", dwg, f"Kitewright Range: {title.lower()} making sketch", mat, notes, DATE, **kw)
         print("sheet", dwg)
 
 
@@ -185,23 +191,23 @@ def do_joints():
             Part("Joiner tube", win("joiner", 300, 640, 0, 200, 290, 350), "#374151"),
             Part("Wing bolt", m["wing_bolts"] & box(500, 600, 0, 200, 300, 350), COL["steel"])]),
         ("joint-02.png", "Boom pylon: through-bolts and clamp caps", "+Y", [
-            Part("Wing panel", win("wing_r", 320, 640, 420, 520, 290, 350), COL["foam"]),
+            Part("Wing panel", win("wing_r", 320, 640, 400, 580, 290, 350), COL["foam"]),
             Part("Boom pylon", m["pylon_r"], COL["print"]),
             Part("Pylon bolts with washers", m["pbolts_r"], COL["steel"]),
             Part("Clamp caps", m["caps_r"], "#115E59"),
-            Part("Lift boom", win("boom_r", 320, 540, 420, 520, 180, 230), COL["carbon"])]),
+            Part("Lift boom", win("boom_r", 320, 540, 400, 580, 180, 230), COL["carbon"])]),
         ("joint-03.png", "Lift motor on the boom end", None, [
-            Part("Lift boom", win("boom_r", mx0 - 45, mx0 + 170, 420, 520, 180, 230), COL["carbon"]),
-            Part("Motor mount", m["mounts_r"] & box(mx0 - 30, mx0 + 30, 420, 520, 150, 260), COL["metal"]),
-            Part("Lift motor", m["motors_r"] & box(mx0 - 40, mx0 + 40, 420, 520, 200, 300), COL["elec"]),
-            Part("Propeller hub", m["props_r"] & box(mx0 - 60, mx0 + 60, 420, 520, 200, 300), "#374151"),
-            Part("ESC under the boom", m["escs_r"] & box(mx0, mx0 + 200, 420, 520, 150, 200), "#7C3AED")]),
+            Part("Lift boom", win("boom_r", mx0 - 45, mx0 + 170, 400, 580, 180, 230), COL["carbon"]),
+            Part("Motor mount", m["mounts_r"] & box(mx0 - 30, mx0 + 30, 400, 580, 150, 260), COL["metal"]),
+            Part("Lift motor", m["motors_r"] & box(mx0 - 40, mx0 + 40, 400, 580, 200, 300), COL["elec"]),
+            Part("Propeller hub", m["props_r"] & box(mx0 - 60, mx0 + 60, 400, 580, 200, 300), "#374151"),
+            Part("ESC under the boom", m["escs_r"] & box(mx0, mx0 + 200, 400, 580, 150, 200), "#7C3AED")]),
         ("joint-04.png", "Landing leg on the boom", "+Y", [
-            Part("Lift boom", win("boom_r", lx0 - 40, lx0 + 40, 420, 520, 180, 230), COL["carbon"]),
-            Part("Leg clamp", m["legclamps_r"] & box(lx0 - 20, lx0 + 20, 420, 520, 0, 240), COL["print"]),
-            Part("Carbon rod", m["legrods_r"] & box(lx0 - 20, lx0 + 20, 420, 520, 0, 240), COL["carbon"]),
-            Part("Fairing", m["legfair_r"] & box(lx0 - 20, lx0 + 20, 420, 520, 0, 240), COL["metal"]),
-            Part("Foot", m["feet_r"] & box(lx0 - 20, lx0 + 20, 420, 520, 0, 240), COL["tpu"])]),
+            Part("Lift boom", win("boom_r", lx0 - 40, lx0 + 40, 400, 580, 180, 230), COL["carbon"]),
+            Part("Leg clamp", m["legclamps_r"] & box(lx0 - 20, lx0 + 20, 400, 580, 0, 240), COL["print"]),
+            Part("Carbon rod", m["legrods_r"] & box(lx0 - 20, lx0 + 20, 400, 580, 0, 240), COL["carbon"]),
+            Part("Fairing", m["legfair_r"] & box(lx0 - 20, lx0 + 20, 400, 580, 0, 240), COL["metal"]),
+            Part("Foot", m["feet_r"] & box(lx0 - 20, lx0 + 20, 400, 580, 0, 240), COL["tpu"])]),
         ("joint-05.png", "Tail boom in its socket", "+Y", [
             Part("Fuselage rear", win("fus", 600, 760, -80, 80, 190, 350), COL["ply"]),
             Part("Tail boom socket", m["socket"], COL["print"]),

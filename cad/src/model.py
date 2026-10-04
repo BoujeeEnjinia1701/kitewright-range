@@ -1,4 +1,5 @@
-"""Kitewright Range parametric model (build123d), TRL 3, constructable design (KWR-DDR-002).
+"""Kitewright Range parametric model (build123d), TRL 3, constructable design (KWR-DDR-002),
+with the round 2 requirement decisions applied (KWR-DDR-003: 22 in propellers on 5215-class motors).
 
 Run from the repo root:  python cad/src/model.py
 Builds every component of the all-electric quadplane from PARAMS, runs the constructability
@@ -39,11 +40,11 @@ PARAMS = {
     "aileron_y": (700.0, 1230.0), "hinge_frac": 0.75,
     "wing_bolt_x": 544.0, "wing_bolt_z": 324.0,
     # lift system
-    "boom_y": 470.0, "boom_z": 205.0, "boom_od": 25.0, "boom_id": 23.0, "motor_half_span": 506.0,
+    "boom_y": 490.0, "boom_z": 205.0, "boom_od": 25.0, "boom_id": 23.0, "motor_half_span": 531.0,   # KWR-DDR-003: 20 mm further out, booms 50 mm longer
     "boom_overhang": 40.0,
     "pylon_x": (350.0, 510.0), "pylon_w": 44.0, "pylon_bolts_x": (380.0, 480.0),
     "clamp_x": ((352.0, 378.0), (482.0, 508.0)), "clamp_t": 6.0,
-    "lift_motor_d": 59.0, "lift_motor_h": 32.0, "mount_h": 20.0, "lift_prop_d": 508.0,   # 20 in propellers
+    "lift_motor_d": 62.0, "lift_motor_h": 35.0, "mount_h": 20.0, "lift_prop_d": 558.8,   # 22 in propellers on 5215-class motors (KWR-DDR-003); motor envelope an estimate
     "leg_inset": 70.0, "leg_rod_d": 12.0, "foot_d": 36.0, "leg_fair": (32.0, 16.0),
     # tail
     "tail_boom_od": 20.0, "tail_boom_id": 17.0, "tail_boom_x": (650.0, 1500.0), "tail_z": 300.0,
@@ -433,7 +434,7 @@ MAKE = {
 
 # Masses of bought parts and Kitewright Core items (kg), per unit
 BOUGHT_MASS = {
-    "mounts": 0.035, "escs": 0.045, "motors": 0.205, "props": 0.045, "cruise_motor": 0.195,
+    "mounts": 0.040, "escs": 0.045, "motors": 0.285, "props": 0.055, "cruise_motor": 0.195,
     "cruise_prop": 0.045, "pitot": 0.030, "core": 0.700, "gnss": 0.080, "mount_plate": 0.120,
     "packs": 1.400, "payload": 1.000, "wing_bolts": 0.004, "pbolts": 0.012, "servos": 0.035,
     "harness": 0.300, "cruise_esc": 0.060,

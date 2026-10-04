@@ -1,5 +1,71 @@
 # Review note: Kitewright Range
 
+## Session 2026-10-03: round 2 requirement decisions applied
+
+Amish, 2026-10-03: "i approve all of the 47 recommendations provided by you. Execute them." For this repo that decides O1 to O4 as recommended, recorded in `docs/decisions/0003-requirement-decisions-round2.md` (KWR-DDR-003). O3's recommendation was "A, decided together with O2; B if O1-B is chosen"; O1-B is chosen, so O3 is applied as its option B, the combined effect of O1-B and O2-A (about 45.0 km, +USD 280, +0.40 kg combined). It needs no change of its own. TRL 3 scope only: nothing built, bought or tested.
+
+### What was done
+
+- `cad/src/model.py`: lift propellers 20 in to 22 in (558.8 mm) on 5215-class motors (envelope 62 x 35 mm and 285 g, estimates; propellers 55 g; mounts 40 g); booms 20 mm further out (490 mm from the centre line) and 50 mm longer (1,142 mm), motors 531 mm ahead of and behind the centre of gravity. Constructability checks pass: 72 solids in 48 parts, no overlaps, nothing floating, discs 78 mm below the wing-top plane (rule 70 mm), lift discs 33 mm clear of the cruise propeller disc, every part fits the 1.3 m case.
+- `docs/04-calcs/sizing.py`: thrust 68.7 N (7.0 kgf, maker-class estimate), 5.0 Ah cells, lift motor drag from the model envelope; the options now cover the endurance still not met on the decided design. Re-run: `results.csv` and `01-sizing.md` (KWR-CAL-001 v0.3).
+- `bom/bom.csv`: lines 12 (boom tube 1,200 mm, USD 52), 18 (mount for a 5215-class motor), 20 (5215-class motor, USD 148), 21 (22 in propeller, USD 50) and 28 (ColdCell pack of 5.0 Ah cells, 324 Wh, USD 350). All new prices are estimates derived from the lines they replace.
+- Regenerated with the repo's scripts: STEP and STL (`cad/step/`, `cad/stl/`); general arrangement KWR-DWG-001 Rev P3 (`cad/src/sheets.py`); making sketches KWR-DWG-105, 106, 108 and 109 at Rev P2 and all other sketches, joint close-ups, steps and overview (`cad/src/build_plan_media.py`; the joint windows were widened for the booms at 490 mm); concept media hero, cutaway, exploded, flow and blueprint KWR-DWG-010 Rev P3 (`cad/src/concept_media.py`); `media/model.glb` (about 1 MB, linear deflection 1.0 mm, angular deflection 0.35 rad) and `media/viewer.html`.
+- Documents: KWR-REQ-001 v0.4 (status only, targets unchanged), KWR-PRC-001 v0.4, KWR-PRB-001 v0.3 (propeller size and safety note), KWR-BLD-001 v0.2 (hardpoints 490 mm out, boom 1,142 mm, motor centres 1,062 mm apart, bought parts, safety note), KWR-DEC-001 v0.2 (O1 to O4 decided, O5 added, change log), README figures, `cad/src/product_model.py` docstring, `project.yaml` trl_evidence.
+- Not regenerated: `media/render-hero.png` and the other photoreal renders, `media/card.png` and `media/social-preview.png` (made on Amish's Mac from the photoreal renders).
+
+### Requirement status
+
+| ID | Before (KWR-CAL-001 v0.2) | After (KWR-CAL-001 v0.3) |
+| --- | --- | --- |
+| R1 | At risk: 31.8 % | Met on paper: 53.4 % on maker-class thrust (estimate) |
+| R2 | Not met: 31.0 min | Not met: 33.6 min |
+| R3 | At risk: 40.9 km | Met on paper: 45.0 km (12 % margin) |
+| R7 | Not met: 10.58 kg | Not met: 10.97 kg, airframe kept by decision (O4-A) |
+| R9 | Met by design: discs 81 mm below the wing-top plane | Met by design: 78 mm |
+| R10 | Met on paper: USD 3,945 | Met on paper: USD 4,225 |
+
+Other figures: hover 1,743 W and 81 A at 5,000 m (13.4 A per cell); cruise 22.3 m/s, 624 W, L/D 7.4; spar safety factor 2.9 to 2.8, lift boom 10.8 to 8.4, pylon bolts 12.5 to 9.9.
+
+### Cost
+
+Value-engineering target: USD 5,000. Estimated cost of the constructable design: USD 4,225 (USD 775 under the target), up USD 280 from USD 3,945: lift motors +USD 112, propellers +USD 40, boom tubes +USD 8, 5.0 Ah cells +USD 120. `budget_usd` is the target and is unchanged.
+
+### Decisions for Amish
+
+**O5. R2 endurance, still not met.** **Proposed, awaiting Amish.** State: 33.6 min against 45 min on the decided design; cause: 648 Wh drives a 10.97 kg aircraft with a zero-lift drag coefficient of 0.079 at 624 W in cruise, and the heavier lift system takes back part of the 5.0 Ah cells' gain.
+- A: keep the decided design for the first prototype and measure drag, mass and pack energy at TRL 4. 33.6 min; no change.
+- B: two 6S4P packs of 5.0 Ah cells. 41.9 min; +USD 233; +0.88 kg; hover margin 42.0 % (R1 still met with the 22 in propellers); R7 worse at 11.85 kg; a larger ColdCell format whose fit in the bays is unchecked.
+- C: moulded carbon wing, tail and fuselage. 37.6 min; +USD 1,200; -0.69 kg.
+- D: moulded airframe and two 6S4P packs of 5.0 Ah cells. 46.4 min, R2 met on paper; +USD 1,433; USD 5,658 in all, USD 658 over the value-engineering target.
+- **Recommendation: A** for the first prototype; D is the second-prototype path once the first one's drag and mass are measured, with B as the cheaper step if the measured drag is lower than estimated.
+
+### Safety notes
+
+- The lift propellers are now 22 in: the propeller safety stop, arming plug, lockable switch, tie-downs and 15 m keep-out zone (D9) apply unchanged; the lift discs pass 33 mm from the cruise propeller disc, so both sets of propellers stay off until that stop.
+- The packs hold about 650 Wh (was about 580 Wh): the charging rules (0 to 45 °C, fire-resistant box, never unattended) and crash-pack isolation are unchanged and apply to the 5.0 Ah cells.
+- The 53.4 % margin rests on a maker-class thrust estimate. The first free hover still waits for AltiRig thrust data at 0.736 kg/m3, ten logged tied hovers and the wing spar proof load (TRL 4 steps in the build plan's safety stop 4); the spar margin is now 2.8.
+
+### Cross-repo actions (sibling repos not edited)
+
+- ColdCell: a 6S3P pack of 5.0 Ah high-rate 21700 cells, same 138 x 75 x 82 mm and 1.40 kg, about 324 Wh, at least 14 A per cell continuous when warmed.
+- AltiRig: first job is the 5215-class motor with a 22 in propeller at 0.736 kg/m3.
+- Kitewright Core: the 6S bus now carries about 81 A in hover at 5,000 m (about 40 A per pack).
+- ColdCell (follow-up for the ColdCell repo, **Proposed, awaiting Amish**): ColdCell needs a 6S3P pack configuration of 5.0 Ah high-rate 21700 cells to match decision 21 A (O2-A), at the same 138 x 75 x 82 mm and 1.40 kg if the cells allow.
+
+### Core power leads (follows from Kitewright Core decision 17 B)
+
+- Core decision 17 B moved the four 8 AWG pack and frame power leads with AS150 plugs out of the Core into each frame's harness. Range's harness, BOM line 29, now carries them: 8 AWG red and black 2 m and four AS150 halves, +USD 60 and +0.124 kg, priced as on Kitewright Lift; `docs/04-calcs/sizing.py` carries the 0.124 kg at the centre of gravity, and build plan step 4 and section 3.14 say where they solder.
+- Re-run results (`results.csv`): take-off mass 10.97 to 11.09 kg, **R7 still not met**; hover margin 53.4 to 51.7 % (R1 still met on paper); endurance 33.6 to 32.9 min (R2 not met); range 45.0 to 44.4 km (R3 still met); estimated cost USD 4,225 to 4,285 (USD 715 under the value-engineering target).
+- Open point: the Core's pack inputs are AS150 while the ColdCell packs are specified with XT90 leads; either the ColdCell packs for Range take AS150 pigtails or the harness carries adaptors. Proposed, awaiting Amish (with the ColdCell follow-up above).
+
+### Re-render
+
+The hero geometry changed visibly: lift propellers 10 % larger in diameter, booms 50 mm longer and 20 mm further out, larger lift motors. The photoreal hero, exploded and detail views and the cards should be re-rendered on the Mac from `cad/src/product_model.py`.
+
+### Recommended next step
+
+- Amish decides O5. Then re-render the photoreal views and cards on the Mac and run the release gate. The design is ready for TRL 4 parts purchase and the AltiRig thrust test of the 5215-class motor with a 22 in propeller; that is a recommendation only, not started.
+
 ## Session 2026-09-30: scaffolded
 
 ### What was done

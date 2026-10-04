@@ -1,4 +1,4 @@
-"""Kitewright Range concept media (TRL 3, constructable design KWR-DDR-002), generated from the model.
+"""Kitewright Range concept media (TRL 3, constructable design KWR-DDR-002 with KWR-DDR-003), generated from the model.
 
 Run from the repo root:  python cad/src/concept_media.py
 Takes every part from cad/src/model.py and renders the media set with .kit/concept.py: hero with the
@@ -77,9 +77,9 @@ def main():
         return
     title = "All-electric quadplane survey frame"
     render_all(
-        parts, project="Kitewright Range", title=title, dwg_no="KWR-DWG-010", rev="P2",
+        parts, project="Kitewright Range", title=title, dwg_no="KWR-DWG-010", rev="P3",
         key_figures=[f"Span {R['span_m']:.2f} m, two 1.18 m wing panels; quadplane, fixed motors, not a tail-sitter",
-                     f"Take-off mass {R['mtow_kg']:.1f} kg with 1 kg payload; four 20 in lift rotors",
+                     f"Take-off mass {R['mtow_kg']:.1f} kg with 1 kg payload; four 22 in lift rotors",
                      f"Hover thrust margin {R['hover_margin'] * 100:.0f} % at 0.736 kg/m3 (5,000 m)",
                      f"Cruise {R['v_cruise_ms']:.0f} m/s, {R['p_cruise_elec_w']:.0f} W; {R['endurance_min']:.0f} min and "
                      f"{R['range_km']:.0f} km at 5,000 m with 20 % reserve",
