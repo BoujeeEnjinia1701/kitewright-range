@@ -1,4 +1,4 @@
-"""Kitewright Range general arrangement sheet KWR-DWG-001, Rev P3 (TRL 3, constructable design KWR-DDR-002, round 2 decisions KWR-DDR-003).
+"""Kitewright Range general arrangement sheet KWR-DWG-001, Rev P3 (TRL 3, constructable design KWR-DDR-002, 2026-10-03 decisions KWR-DDR-003).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/KWR-DWG-001.svg, .pdf and .png from cad/src/model.py with .kit/drawing.py.
@@ -24,12 +24,13 @@ def main():
     work = ROOT / "cad" / "drawings" / "_views_ga"
     views = project_views(asm, work)
     s = Sheet(project="Kitewright Range", title="All-electric quadplane survey frame: general arrangement",
-              dwg_no="KWR-DWG-001", rev="P3", author="Amish Chadha", date=DATE, scale=0.04, theme="technical",
+              dwg_no="KWR-DWG-001", rev="P4", author="Amish Chadha", date="2026-10-04", scale=0.04, theme="technical",
               material="Foam and glass wing and tail, lite-ply fuselage, carbon tubes, printed ASA fittings; "
                        "bought parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (KWR-CAL-001)", DATE, "AC"),
                          ("P2", "KWR-DDR-002: design for construction", DATE, "AC"),
-                         ("P3", "KWR-DDR-003: 22 in lift propellers on 5215-class motors, booms moved out", DATE, "AC")])
+                         ("P3", "KWR-DDR-003: 22 in propellers, 5215-class motors, longer booms", DATE, "AC"),
+                         ("P4", "KWR-DDR-004: Kitewright Core envelope, 156 wide, AS150", "2026-10-04", "AC")])
     s.add_ortho(views)
     s.add_svg(views["iso"], 276, 36, 140, 84, label="Isometric view",
               sublabel="Not to scale; seen from the front right and above")
@@ -39,10 +40,10 @@ def main():
         f"Fuselage {P['fus_len']:.0f} x {P['fus_w']:.0f} x {P['fus_h']:.0f}; nose to tail {D['overall_len']:,.0f}, {P['stab_le'] + P['stab_chord'] - (D['motor_x'][0] - P['lift_prop_d'] / 2):,.0f} over the lift propellers",
         f"Lift booms {P['boom_od']:.0f} OD x {D['boom_len']:,.0f} at y = +/-{P['boom_y']:.0f}, on pylons below the wing",
         f"Lift motors {2 * P['motor_half_span']:,.0f} apart along each boom, centred on the CG at x = {D['x_cg']:.0f}",
-        f"Lift propellers {P['lift_prop_d'] / 25.4:.0f} in ({P['lift_prop_d']:.0f}); discs {D['disc_below_wing_top']:.0f} below the wing-top plane",
+        f"Lift propellers 22 in ({P['lift_prop_d']:.0f}) on 5215-class motors; discs {D['disc_below_wing_top']:.0f} below the wing-top plane",
         f"Cruise motor at the nose, 14 in folding propeller; {D['lift_to_cruise_disc_y']:.0f} gap to the lift discs",
         f"Tail on a {P['tail_boom_od']:.0f} carbon boom: stabiliser {P['stab_span']:.0f} x {P['stab_chord']:.0f}, fin {P['fin_h']:.0f} high",
-        f"Payload mount under the fuselage at the CG; {D['ground_to_payload']:.0f} ground clearance under a 1 kg payload",
+        f"Kitewright Core under the floor at the CG: M4 on 220 x 130, opening 200 x 112; payload shoe {D['ground_to_payload']:.0f} clear of the ground under 1 kg",
         f"Four landing legs, stance {2 * P['boom_y']:.0f} x {D['leg_x'][1] - D['leg_x'][0]:,.0f}",
         f"Longest part for transport: wing panel {P['panel_span'] + 25:,.0f}",
         "Third-angle; front view from -Y (left side); X aft from the firewall, Z up from the ground",

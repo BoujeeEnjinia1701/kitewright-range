@@ -5,7 +5,7 @@ project: Kitewright Range
 doc_type: Build plan
 version: "0.3"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-04'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -16,18 +16,18 @@ revisions:
 - version: "0.2"
   date: '2026-10-03'
   author: Amish Chadha
-  change: "Round 2 requirement decisions carried in (KWR-DDR-003): 22 in propellers on 5215-class motors, booms 490 mm out and 1,142 mm long, 5.0 Ah cells in the packs"
+  change: 'Amish''s 2026-10-03 decisions (KWR-DDR-003; "i agree with all the 46 recommendations you provided. please proceed."): 22 in propellers on 5215-class motors, longer booms further out, 5.0 Ah cells, Kitewright Core power leads made and fitted by Range'
 - version: "0.3"
-  date: '2026-10-03'
+  date: '2026-10-04'
   author: Amish Chadha
-  change: "Core power leads (8 AWG, four AS150 halves) added to the harness, following Kitewright Core decision 17 B; overview mass and cost updated"
+  change: Amish's round-3 decision 10A (KWR-DDR-004); the Kitewright Core under the floor to the family envelope, 156 mm fuselage, Core deck doubler, packs moved, AS150, antennas and GNSS on the hatch; sections 1, 2, 3.1, 3.2, bought parts, steps 4, 5, 13, 14 and 16
 ---
 
 # Kitewright Range prototype build plan
 
 **Plan, not yet built.** How to build the first proof-of-concept prototype of the Kitewright Range quadplane, component by component. Building and testing to it is TRL 4 work. Decisions still to be made are kept in the design decisions register (`docs/06-design-decisions.md`), not here.
 
-> **Safety:** This aircraft has four 22 in lift propellers, a 14 in cruise propeller and two lithium-ion packs of about 325 Wh each. Propellers go on only at the propeller safety stop (section 6), the arming plug stays out whenever anyone handles the aircraft, and packs are charged only between 0 and 45 °C in a fire-resistant box.
+> **Safety:** This aircraft has four 22 in lift propellers, a 14 in cruise propeller and two lithium-ion packs of about 324 Wh each. Propellers go on only at the propeller safety stop (section 6), the arming plug stays out whenever anyone handles the aircraft, and packs are charged only between 0 and 45 °C in a fire-resistant box.
 
 ## 1. What you are building
 
@@ -35,23 +35,23 @@ revisions:
 
 *Figure 1. Every component, pulled apart and numbered in build order.*
 
-A 2.5 m span quadplane of about 11.1 kg with its 1 kg payload. Thirteen components are made: the fuselage box and hatch from plywood; the two wing panels, the stabiliser and the fin from hot-wire cut foam skinned in glass; the lift booms and tail boom cut from carbon tube; and the nose cone, tail socket, pylons, clamp caps, landing legs and tail mount printed in ASA. Everything else is bought: the lift and cruise motors with their ESCs and propellers, the servos, the pitot, the Kitewright Core avionics with its payload mount, and two ColdCell packs. The parts cost is estimated at USD 4,285 in the bill of materials.
+A 2.5 m span quadplane of about 11.4 kg with its 1 kg payload. Thirteen components are made: the fuselage box and hatch from plywood; the two wing panels, the stabiliser and the fin from hot-wire cut foam skinned in glass; the lift booms and tail boom cut from carbon tube; and the nose cone, tail socket, pylons, clamp caps, landing legs and tail mount printed in ASA. Everything else is bought: the lift and cruise motors with their ESCs and propellers, the servos, the pitot, the Kitewright Core with its payload rail, the four power leads that join the Core to the packs and the aircraft, and two ColdCell packs. The parts cost is estimated at USD 4,314 in the bill of materials.
 
 ## 2. What changed to make it buildable
 
 | Component | The concept had | The buildable design has | Why |
 | --- | --- | --- | --- |
 | Tail | Carried on the lift booms | A conventional tail on its own carbon boom behind the fuselage | Booms stay short enough for the 1.3 m cases; the rear rotor wash stays off the tail |
-| Lift booms | "Below the wing", no fixing | Printed pylons under the wing, through-bolted, with the booms held by clamp caps; booms 490 mm out from the centre line | The rotor discs sit 78 mm below the wing-top plane and 33 mm clear of the cruise propeller; the booms come off |
+| Lift booms | "Below the wing", no fixing | Printed pylons under the wing, through-bolted, with the booms held by clamp caps; booms 490 mm out from the centre line | The 22 in rotor discs sit 77 mm below the wing-top plane and 33 mm clear of the cruise propeller; the booms come off |
 | Lift motors | Positions not set | 531 mm ahead of and behind the balance point on each boom | The rotors lift through the balance point and clear the wing |
-| Lift propellers | 20 in propellers on 5212-class motors | 22 in propellers on 5215-class motors, the booms 50 mm longer and 20 mm further out | More hover thrust at 5,000 m with the disc clearances kept (decided by Amish, KWR-DDR-003) |
 | Cruise motor | Pusher or tractor | Tractor at the nose with a folding propeller | Nothing to clear behind; the blades fold for landing |
 | Wing | Removable halves | Two panels on a carbon joiner through the fuselage, one nylon bolt each | A stock tube and a field-proven fixing |
-| Fuselage | A pod | A plywood box with the packs either side of the joiner and the avionics in front | Packs lift out with the wing fitted; balance does not change with the payload |
-| Landing gear | None | Four faired legs on the booms | Stands level on rough ground with 83 mm under the payload |
+| Fuselage | A pod | A plywood box 156 mm wide, with one pack in the nose bay and one behind the Kitewright Core's lid | Packs lift out with the wing fitted; balance does not change with the payload |
+| Kitewright Core | An avionics box in front | The Core hung under the floor at the balance point to the family envelope (four M4 on 220 x 130 mm in a birch doubler, lid up through a 200 x 112 mm opening) | One Core fits Lift and Range the same way; the payload hangs on the balance point |
+| Landing gear | None | Four faired legs on the booms | Stands level on rough ground with 80 mm under the payload |
 | Wiring | Not shown | A conduit in each wing to a plug at the root | Boom power disconnects with the wing |
 
-Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
+Every change is argued in decision record KWR-DDR-002. The propeller size, the cells and the Core power leads follow Amish's 2026-10-03 decisions, recorded in KWR-DDR-003; the Core's place, the fuselage width and the AS150 plugs follow his decision 10A of 2026-10-04, recorded in KWR-DDR-004.
 
 ## 3. Making the components
 
@@ -61,17 +61,17 @@ Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
 
 *Figure 2. Fuselage box making sketch (KWR-DWG-101).*
 
-**What it is and what it is made from.** An open-topped box 750 mm long, 140 mm wide and 150 mm high. The sides, floor and two inner bulkheads are 3 mm poplar lite-ply; the firewall, the rear wall and two wing-root doublers are 6 mm birch ply. The outside is skinned in 80 g/m2 glass cloth.
+**What it is and what it is made from.** An open-topped box 750 mm long, 156 mm wide and 150 mm high (150 mm inside, the width the Kitewright Core asks for). The sides, floor and two inner bulkheads are 3 mm poplar lite-ply; the firewall, the rear wall and two wing-root doublers are 6 mm birch ply. The outside is skinned in 80 g/m2 glass cloth.
 
 **How to make it.**
 
-1. Cut the two sides 750 x 150 mm and the floor 738 x 134 mm from 3 mm lite-ply; the firewall and rear wall 140 x 150 mm from 6 mm birch ply; two bulkheads 134 x 147 mm from 3 mm lite-ply.
+1. Cut the two sides 750 x 150 mm and the floor 738 x 150 mm from 3 mm lite-ply; the firewall and rear wall 156 x 150 mm from 6 mm birch ply; two bulkheads 150 x 147 mm from 3 mm lite-ply.
 2. Cut two doublers 200 x 52 mm from 6 mm birch ply. Glue one inside each side, 380 mm back from the front edge, with its top 3 mm below the side's top edge.
 3. Clamp the two sides together and drill through both: a 20.5 mm hole 420 mm back and 20 mm down from the top edge (the wing joiner), and a 5.5 mm hole 544 mm back and 21 mm down (the wing bolt).
 4. Drill a 20.5 mm hole in the rear wall on its centre line, 45 mm down from the top edge, for the tail boom.
-5. Glue the box together on a flat board against a square: firewall at the front, rear wall at the back, bulkheads 252 mm and 585 mm behind the front face of the firewall.
+5. Glue the box together on a flat board against a square: firewall at the front, rear wall at the back, bulkheads 252 mm and 645 mm behind the front face of the firewall.
 6. Push a straight 20 mm rod through both joiner holes before the glue sets; it must slide freely and sit square to the sides.
-7. Glue four M4 threaded inserts into the floor under the balance point, 414 mm behind the firewall, on the hole pattern of the payload mount bought.
+7. Cut the Kitewright Core's 200 x 112 mm lid opening in the floor, centred 414 mm behind the firewall (the balance point), and drill four 4.3 mm holes on a 220 x 130 mm pattern round it. Glue the 6 mm birch Core deck doubler (300 x 150 mm, the same opening and holes) on the floor inside, and press four M4 T-nuts into it from above.
 8. Sand the outside, lay 80 g/m2 glass cloth in epoxy, and glue a 3 mm lip inside the top of the firewall for the hatch tongue.
 
 **How it fits the parts next to it.** The wing joiner runs through both sides and doublers (Figure 3). The nose cone glues and bolts to the firewall, the tail socket to the rear wall, and the hatch sits on the side walls and bulkheads.
@@ -88,16 +88,16 @@ Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
 
 *Figure 4. Hatch making sketch (KWR-DWG-102).*
 
-**What it is and what it is made from.** A 750 x 140 mm lid of 3 mm lite-ply that carries the GNSS mast and the arming switch.
+**What it is and what it is made from.** A 750 x 156 mm lid of 3 mm lite-ply that carries the GNSS mast with the Core's GNSS receiver, the Core's three antennas and the arming switch.
 
 **How to make it.**
 
-1. Cut the plate 750 x 140 mm. Glue a 20 x 120 mm tongue under the front edge so it projects 10 mm forward.
+1. Cut the plate 750 x 156 mm. Glue a 20 x 120 mm tongue under the front edge so it projects 10 mm forward.
 2. Drill an 8.5 mm hole on the centre line 660 mm back from the front edge for the GNSS mast.
-3. Cut the opening for the lockable arming switch beside the mast, to the switch bought.
+3. Cut the opening for the lockable arming switch beside the mast, to the switch bought, and drill three 6.5 mm holes beside the mast for the Core's antennas on SMA extension leads.
 4. Drill the back for one M4 nylon thumb screw and glue a captive nut under the rear wall's top edge to match.
 
-**How it fits the parts next to it.** The tongue slides under the lip on the firewall; the back is held by the thumb screw. The mast plugs through the hole into a socket on the Core avionics tray.
+**How it fits the parts next to it.** The tongue slides under the lip on the firewall; the back is held by the thumb screw. The mast plugs through the hole into a socket glued to the rear bulkhead; the GNSS cable and the three antenna leads run down to the Core's lid.
 
 **Check before moving on.** The hatch sits flat on all walls and comes off with the thumb screw alone.
 
@@ -209,7 +209,7 @@ Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
 
 *Figure 13. Lift boom making sketch (KWR-DWG-108).*
 
-**What it is and what it is made from.** Roll-wrapped carbon tube 25 mm outside, 23 mm inside, 1,142 mm long, cut from a 1,200 mm length.
+**What it is and what it is made from.** Roll-wrapped carbon tube 25 mm outside, 23 mm inside, 1,142 mm long, cut from a 1,200 mm tube.
 
 **How to make it.**
 
@@ -314,15 +314,16 @@ Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
 | --- | --- | --- |
 | Wing spars and joiner | Pultruded carbon tube 22 x 20 mm; roll-wrapped carbon tube 20 x 16 mm, 640 mm | Cut the spars to 1,160 mm; check the joiner slides into the spars |
 | Wing bolts, pylon bolts | M5 x 40 nylon cap screws; M5 x 90 stainless cap screws with 15 mm washers | None |
-| Lift motor mounts | Aluminium mounts that clamp a 25 mm tube, top plate large enough for a 5215-class motor | Drill the top plate to the motor's bolt pattern |
+| Lift motor mounts | Aluminium mounts that clamp a 25 mm tube, top plate at least 64 mm across | Drill the top plate to the motor's bolt pattern |
 | Lift ESCs | 60 A, 6S, open firmware, rated to -20 °C | Extend the leads to the boom root plug |
-| Lift motors and propellers | 5215-class, about 260 to 300 KV, 6S, maker thrust at least 7.0 kgf with a 22 in propeller; 22 in carbon, two of each hand | Balance every propeller |
+| Lift motors and propellers | 5215-class, about 285 g, 6S, at least 7.0 kgf with a 22 x 7 in propeller; 22 x 7 in carbon, two of each hand | Balance every propeller |
 | Cruise motor, ESC and propeller | 4120-class, 400 KV with a 60 A ESC; 14 x 10 in folding blades on a 36 mm spinner | None |
 | Servos | Metal-gear digital, 20 mm class, rated to -20 °C | Fit in the servo bays with pushrods |
 | Heated pitot | 6 mm probe with heater and airspeed sensor | Glue the tube into the left wing hole |
-| Kitewright Core avionics and payload mount | To the Kitewright Core design | None |
-| ColdCell packs | Two 6S3P Li-ion packs of 5.0 Ah high-rate 21700 cells, to the ColdCell design | None |
-| Harness | 10 and 12 AWG silicone wire, XT90 and XT60, root plugs, arming plug; plus the Core power leads, 8 AWG silicone wire red and black 2 m and four AS150 halves (two pack inputs, two frame outputs) | Make to the Core wiring diagram; solder the Core leads to the Core's board pads |
+| Kitewright Core with its rail and pins | To the Kitewright Core design (KWC-BLD-001), 0.99 kg | None; its GNSS receiver and antennas move to the hatch on extension cables |
+| ColdCell packs | Two 6S3P Li-ion packs of 5.0 Ah 21700 cells with AS150 leads, 138 x 75 x 82 mm | None |
+| Core power leads | 8 AWG silicone wire, red and black, 2 m; four AS150 connector halves | Cut four lead pairs about 100 mm long; solder a plug to each, inputs and outputs of opposite gender; label them PACK 1, PACK 2, FRAME A and FRAME B |
+| Harness | 10 and 12 AWG silicone wire, AS150 on every pack and bus lead, XT60 on the boom root plugs, arming plug; three 300 mm SMA extension leads | Make to the Core wiring diagram |
 
 ## 4. Putting it together
 
@@ -344,17 +345,17 @@ Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
 
 *Figure 24. Step 3.* Four M3 bolts with threadlock into the nose cone inserts. Fit the spinner and yoke; leave the blades off until the propeller safety stop.
 
-### Step 4: Kitewright Core avionics into the front bay
+### Step 4: Core deck doubler onto the floor
 
 ![Step 4](05-build-plan/step-04.png)
 
-*Figure 25. Step 4.* Fit the avionics tray between the firewall and the first bulkhead on soft mounts; run the harness to both battery bays, the wing root plugs and the tail. Solder the four 8 AWG Core power leads (two pack inputs, two frame outputs, each with an AS150 half) to the Core's power board pads and tie them to its strain-relief bar, with the arming plug out and no pack in the aircraft.
+*Figure 25. Step 4.* Glue the doubler on the floor with its opening over the floor's opening and its four holes over the floor's; press the M4 T-nuts home from above.
 
-### Step 5: payload mount under the fuselage
+### Step 5: Kitewright Core under the floor
 
 ![Step 5](05-build-plan/step-05.png)
 
-*Figure 26. Step 5.* Four M4 bolts into the floor inserts; the connector lead passes through the floor to the Core.
+*Figure 26. Step 5.* Before the Core goes on, solder the four Core power leads to the Core's pads and pass them out through its grommets: PACK 1 and PACK 2 to the two battery bays, FRAME A and FRAME B to the harness for the lift and cruise ESCs. Check polarity at each plug with a meter. Then, from below, push the Core's lid up through the floor opening with its rail pointing aft, until its four corner spacers meet the floor, and fit four M4 screws into the T-nuts. Run the harness to both battery bays, the wing root plugs and the tail.
 
 ### Step 6: tail boom into the socket
 
@@ -402,13 +403,13 @@ Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
 
 ![Step 13](05-build-plan/step-13.png)
 
-*Figure 34. Step 13.* One pack in front of the joiner and one behind it, each held by a hook-and-loop strap through the floor. Leave the arming plug out.
+*Figure 34. Step 13.* One pack in the nose bay, on the floor, and one on the doubler behind the Core's lid, each held by a hook-and-loop strap. Plug them into PACK 1 and PACK 2 (AS150). Leave the arming plug out.
 
 ### Step 14: hatch and GNSS mast
 
 ![Step 14](05-build-plan/step-14.png)
 
-*Figure 35. Step 14.* Slide the hatch tongue under the firewall lip, fit the thumb screw and plug the GNSS mast through the hatch.
+*Figure 35. Step 14.* Screw the three SMA extension leads onto the Core's lid bulkheads and push the antennas up through the hatch holes; slide the hatch tongue under the firewall lip, fit the thumb screw and plug the GNSS mast, with the Core's GNSS receiver on top, through the hatch.
 
 ### Step 15: lift propellers and pitot probe
 
@@ -420,7 +421,7 @@ Every change is argued in decision records KWR-DDR-002 and KWR-DDR-003.
 
 ![Step 16](05-build-plan/step-16.png)
 
-*Figure 37. Step 16.* Slide the payload onto the rail until the locking pin shows, and plug its connector.
+*Figure 37. Step 16.* From the tail end, slide the payload's shoe onto the Core's rail lips until it meets the front stops; both locking pins drop into the shoe. Plug the Core's DS-014 pigtail into the payload.
 
 ## 5. First checks
 
@@ -451,7 +452,7 @@ These checks are listed here; a TRL 4 test report records them.
 - Hot-wire foam cutter with root and tip templates; vacuum bagging or peel ply for glassing; epoxy, scales and mixing gear.
 - Fine-tooth saw, abrasive disc for carbon tube, drill press or guide, 20.5 mm and 5.5 mm drills, heat-set insert tip.
 - 3D printer that prints ASA and TPU, with an enclosure.
-- Soldering for 10 AWG wire and XT90 connectors; a multimeter.
+- Soldering for 10 AWG wire and AS150 connectors, and a 100 W iron or better for the 8 AWG Core power leads and AS150 plugs (hold the hot wire with pliers); a multimeter.
 - A 2.6 m flat bench, a well-ventilated room for epoxy and carbon dust (wear a dust mask), and an outdoor area for powered tests.
 - Skills: model aircraft building, multirotor wiring, PX4 setup with a ground station.
 
@@ -462,4 +463,4 @@ These checks are listed here; a TRL 4 test report records them.
 - Pictures: `cad/src/build_plan_media.py`, written to `docs/05-build-plan/`.
 - Calculations: `docs/04-calcs/01-sizing.md` (KWR-CAL-001) and `docs/04-calcs/sizing.py`.
 - Bill of materials: `bom/bom.csv`.
-- Decisions: `docs/decisions/0001-trl2-review-decisions.md`, `docs/decisions/0002-design-for-construction.md`, `docs/decisions/0003-requirement-decisions-round2.md` and `docs/06-design-decisions.md`.
+- Decisions: `docs/decisions/0001-trl2-review-decisions.md`, `docs/decisions/0002-design-for-construction.md`, `docs/decisions/0003-requirement-decisions.md` and `docs/06-design-decisions.md`.

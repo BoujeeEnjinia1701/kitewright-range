@@ -3,7 +3,7 @@ doc_id: KWR-PRB-001
 title: Kitewright Range problem statement
 project: Kitewright Range
 doc_type: Problem statement
-version: "0.4"
+version: "0.2"
 status: Draft
 date: '2026-10-03'
 author: Amish Chadha
@@ -17,14 +17,6 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Open questions answered by KWR-DDR-001; budget stated as a value-engineering target; co-design candidate named
-- version: "0.3"
-  date: '2026-10-03'
-  author: Amish Chadha
-  change: Propeller size and safety note brought to the round 2 requirement decisions (KWR-DDR-003)
-- version: "0.4"
-  date: '2026-10-03'
-  author: Amish Chadha
-  change: Safety note mass with the Core power leads in the harness (Kitewright Core decision 17 B)
 ---
 
 # Kitewright Range problem statement
@@ -90,10 +82,10 @@ The scaffold's open questions were answered on 2026-10-03 under Amish's pre-appr
 
 - Reference firmware: PX4 quadplane, matching the Kitewright Core (D1).
 - Wing: 2.50 m span in two 1.18 m panels, aspect ratio 8.9, set by the 1.3 m transport case (D2).
-- Propellers: one set of propellers for every altitude band (D3); 22 in on 5215-class motors since the round 2 requirement decisions (KWR-DDR-003).
+- Propellers: one set of 20 in propellers for every altitude band (D3).
 - LakeWatch: 1 kg on Range; the sampling winch belongs on Kitewright Lift (D4).
 - Co-design: the Sikkim State Disaster Management Authority is the first candidate to approach, a university glaciology group the second; neither is agreed (D8).
 
 Requirements the design does not yet meet are open decisions for Amish in `docs/06-design-decisions.md`.
 
-> **Safety:** Kitewright Range is an 11.1 kg aircraft with four 22 in lift propellers, a folding cruise propeller and about 650 Wh of lithium-ion cells. Propeller strikes, lithium fire after a crash or a cold charge, and a crash in remote terrain after loss of link are the main hazards; the precis (KWR-PRC-001) and the build plan's safety stops (KWR-BLD-001) set out the controls.
+> **Safety:** Kitewright Range is a 10.6 kg aircraft with four 20 in lift propellers, a folding cruise propeller and about 580 Wh of lithium-ion cells. Propeller strikes, lithium fire after a crash or a cold charge, and a crash in remote terrain after loss of link are the main hazards; the precis (KWR-PRC-001) and the build plan's safety stops (KWR-BLD-001) set out the controls.

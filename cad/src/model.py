@@ -1,5 +1,4 @@
-"""Kitewright Range parametric model (build123d), TRL 3, constructable design (KWR-DDR-002),
-with the round 2 requirement decisions applied (KWR-DDR-003: 22 in propellers on 5215-class motors).
+"""Kitewright Range parametric model (build123d), TRL 3, constructable design (KWR-DDR-002, KWR-DDR-003).
 
 Run from the repo root:  python cad/src/model.py
 Builds every component of the all-electric quadplane from PARAMS, runs the constructability
@@ -9,6 +8,12 @@ STEP and STL files to cad/step and cad/stl.
 Axes and units: millimetres. X runs from the nose (firewall at x = 0) toward the tail, Y is to
 the right wing (+Y is the right wing seen from behind), Z is up with the ground at z = 0 when the
 aircraft stands on its landing feet. The wing spar line is straight at 30 % chord.
+
+The Kitewright Core hangs under the fuselage floor at the centre of gravity to the family envelope
+(core_envelope.py, the Kitewright interface table of 2026-10-04, decision 10A): four M4 hard points on a
+220 x 130 mm pattern in a 6 mm birch doubler on the floor, its lid up through a 200 x 112 mm opening, its
+rail and payload shoe under the fuselage. The Core's GNSS receiver rides the hatch mast and its antennas
+go to the hatch on extension leads.
 
 PRELIMINARY, NOT FOR FABRICATION. Every size here is a TRL 3 design figure; bought parts are
 envelopes of a specification, not of a named product.
@@ -23,11 +28,13 @@ from build123d import (Box, Compound, Cylinder, Face, Line, Location, Plane, Pol
                        Spline, Wire, export_step, export_stl, extrude, loft, make_face)
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import core_envelope as CE  # noqa: E402
 
 PARAMS = {
     # fuselage box (3 mm birch ply, glass cloth outside)
-    "fus_len": 750.0, "fus_w": 140.0, "fus_h": 150.0, "fus_z0": 195.0, "ply": 3.0, "ply_thick": 6.0,
-    "bulkheads": (252.0, 585.0),            # x of the two inner bulkheads (front faces)
+    "fus_len": 750.0, "fus_w": 156.0, "fus_h": 150.0, "fus_z0": 195.0, "ply": 3.0, "ply_thick": 6.0,   # 156 wide: 150 inside for the Core (decision 10A; was 140)
+    "bulkheads": (252.0, 645.0),            # x of the two inner bulkheads (front faces); rear one moved aft from 585 for the rear pack (10A)
     "doubler_x": (380.0, 580.0), "doubler_z": (290.0, 342.0),
     "hatch_t": 3.0,
     # nose cone and cruise drive
@@ -40,20 +47,20 @@ PARAMS = {
     "aileron_y": (700.0, 1230.0), "hinge_frac": 0.75,
     "wing_bolt_x": 544.0, "wing_bolt_z": 324.0,
     # lift system
-    "boom_y": 490.0, "boom_z": 205.0, "boom_od": 25.0, "boom_id": 23.0, "motor_half_span": 531.0,   # KWR-DDR-003: 20 mm further out, booms 50 mm longer
+    "boom_y": 490.0, "boom_z": 205.0, "boom_od": 25.0, "boom_id": 23.0, "motor_half_span": 531.0,
     "boom_overhang": 40.0,
     "pylon_x": (350.0, 510.0), "pylon_w": 44.0, "pylon_bolts_x": (380.0, 480.0),
     "clamp_x": ((352.0, 378.0), (482.0, 508.0)), "clamp_t": 6.0,
-    "lift_motor_d": 62.0, "lift_motor_h": 35.0, "mount_h": 20.0, "lift_prop_d": 558.8,   # 22 in propellers on 5215-class motors (KWR-DDR-003); motor envelope an estimate
+    "lift_motor_d": 62.0, "lift_motor_h": 36.0, "mount_h": 20.0, "lift_prop_d": 558.8,   # 22 in propellers on 5215-class motors (KWR-DDR-003)
     "leg_inset": 70.0, "leg_rod_d": 12.0, "foot_d": 36.0, "leg_fair": (32.0, 16.0),
     # tail
     "tail_boom_od": 20.0, "tail_boom_id": 17.0, "tail_boom_x": (650.0, 1500.0), "tail_z": 300.0,
     "stab_chord": 170.0, "stab_span": 640.0, "stab_le": 1335.0, "stab_z": 326.0,
     "fin_root": 170.0, "fin_tip": 130.0, "fin_h": 300.0,
-    # bays and Kitewright Core interfaces (assumed, see docs/REVIEW.md cross-repo actions)
-    "pack": (138.0, 75.0, 82.0), "pack_x": (268.0, 434.0),
-    "core_box": (180.0, 110.0, 60.0), "core_x": 30.0,
-    "mount_plate": (160.0, 80.0, 12.0), "payload": (150.0, 90.0, 100.0),
+    # bays and the Kitewright Core to the family envelope (core_envelope.py, decision 10A)
+    "pack": (138.0, 75.0, 82.0), "pack_x": (60.0, 506.0),   # front pack in the nose bay, rear pack behind the Core lid (10A)
+    "core_deck": (300.0, 6.0),                # birch doubler on the floor carrying the Core's four M4 hard points: length, thickness
+    "payload": (140.0, 88.0, 100.0),          # payload body under its shoe: inside the Core's 88 mm neck and clear of its pigtail plug
     "gnss_x": 660.0, "gnss_mast": 120.0,
     "pitot_y": -800.0,
     # rules
@@ -118,9 +125,13 @@ def derived(P=PARAMS):
     D["cruise_prop_x"] = xp
     D["lift_to_cruise_disc_y"] = (yb - half) - P["cruise_prop_d"] / 2
     D["rear_disc_to_stab"] = P["stab_le"] - (D["motor_x"][1] + P["lift_prop_d"] / 2)
+    D["lift_disc_to_fus"] = yb - P["lift_prop_d"] / 2 - P["fus_w"] / 2
     D["leg_x"] = (D["motor_x"][0] + P["leg_inset"], D["motor_x"][1] - P["leg_inset"])
     D["leg_top"] = P["boom_z"] - P["boom_od"] / 2
-    D["ground_to_payload"] = P["fus_z0"] - P["mount_plate"][2] - P["payload"][2]
+    D["core_z"] = P["fus_z0"] - CE.CORE["spacer"][2]          # Core plate top: the floor underside is its deck
+    D["shoe_bot"] = D["core_z"] + CE.CORE["shoe"][3]
+    D["ground_to_payload"] = D["shoe_bot"] - P["payload"][2]
+    D["ground_to_core_knobs"] = D["core_z"] + CE.CORE["knob"][1]
     D["ground_to_cruise_tip"] = P["thrust_line_z"] - P["cruise_prop_d"] / 2
     D["tail_arm"] = P["stab_le"] + 0.25 * P["stab_chord"] - (D["x_le_mac"] + 0.25 * D["mac"])
     D["stab_area_m2"] = P["stab_chord"] * P["stab_span"] / 1e6
@@ -225,7 +236,19 @@ def build_parts(P=PARAMS):
     fus -= cyl_y(-W, W, P["spar_x"], P["spar_z"], P["joiner_od"] + 0.5)
     fus -= cyl_y(-W, W, P["wing_bolt_x"], P["wing_bolt_z"], 5.5)
     fus -= cyl_x(L - 10, L + 1, 0, P["tail_z"], P["tail_boom_od"] + 0.5)
+    xc = D["x_cg"]
+    ox, oy = CE.CORE["deck_opening"]
+    fus -= box(xc - ox / 2, xc + ox / 2, -oy / 2, oy / 2, z0 - 1, z0 + t + 1)          # floor opening for the Core lid
+    for fx, fy in CE.frame_points():
+        fus -= cyl_z(z0 - 1, z0 + t + 1, xc - fx, fy, 4.3)
     m["fus"] = fus
+    # 1a Core deck doubler: 6 mm birch on the floor, the Core's four M4 hard points and the lid opening
+    dl, dt = P["core_deck"]
+    dk = box(xc - dl / 2, xc + dl / 2, -W / 2 + t, W / 2 - t, z0 + t, z0 + t + dt)
+    dk -= box(xc - ox / 2, xc + ox / 2, -oy / 2, oy / 2, z0, z0 + t + dt + 1)
+    for fx, fy in CE.frame_points():
+        dk -= cyl_z(z0, z0 + t + dt + 1, xc - fx, fy, 4.3)
+    m["core_deck"] = dk
 
     # 2 hatch (3 mm ply) with the GNSS mast hole
     m["hatch"] = box(0, L, -W / 2, W / 2, z1, z1 + P["hatch_t"]) - cyl_z(z1 - 1, z1 + 10, P["gnss_x"], 0, 8.5)
@@ -362,15 +385,18 @@ def build_parts(P=PARAMS):
 
     # bought and Kitewright Core parts in the bays (envelopes)
     pl, pw_, ph = P["pack"]
-    packs = [box(px, px + pl, -pw_ / 2, pw_ / 2, z0 + t, z0 + t + ph) for px in P["pack_x"]]
+    zp = [z0 + t, z0 + t + P["core_deck"][1]]           # the rear pack sits on the Core deck doubler (10A)
+    packs = [box(px, px + pl, -pw_ / 2, pw_ / 2, zz, zz + ph) for px, zz in zip(P["pack_x"], zp)]
     m["packs"] = Compound(packs)
-    cl_, cw, ch = P["core_box"]
-    m["core"] = box(P["core_x"], P["core_x"] + cl_, -cw / 2, cw / 2, z0 + t, z0 + t + ch)
-    ml, mw, mh = P["mount_plate"]
-    xc = D["x_cg"]
-    m["mount_plate"] = box(xc - ml / 2, xc + ml / 2, -mw / 2, mw / 2, z0 - mh, z0)
+    # Kitewright Core (Core repo), turned so its rail points aft: the payload slides in from the tail
+    zc = D["core_z"]
+    turn = lambda sh: Pos(xc, 0, zc) * Rot(0, 0, 180) * sh   # noqa: E731
+    m["core"] = turn(CE.core_body())
+    m["mount_plate"] = turn(CE.core_rail() + CE.core_pins() + CE.core_plug())
     al, aw, ah = P["payload"]
-    m["payload"] = box(xc - al / 2, xc + al / 2, -aw / 2, aw / 2, z0 - mh - ah, z0 - mh)
+    sb = D["shoe_bot"]
+    xs = xc - (CE.CORE["shoe"][0] + CE.CORE["shoe"][1]) / 2          # shoe centre (the Core is turned 180 deg)
+    m["payload"] = turn(CE.shoe()) + box(xs - al / 2, xs + al / 2, -aw / 2, aw / 2, sb - ah, sb)
     zh = z1 + P["hatch_t"]
     m["gnss"] = cyl_z(z1 - 2, zh + P["gnss_mast"], P["gnss_x"], 0, 8.0) + cyl_z(zh + P["gnss_mast"], zh + P["gnss_mast"] + 16, P["gnss_x"], 0, 60)
     m["pitot"] = cyl_x(pit_x0, pit_x1, pit_y, pit_z, 6.0)
@@ -407,11 +433,12 @@ BOM = {
     "cruise_motor": (22, "Cruise motor"),
     "cruise_prop": (23, "Cruise folding propeller"),
     "pitot": (25, "Heated pitot probe"),
-    "core": (26, "Kitewright Core avionics"),
-    "gnss": (26, "GNSS mast (Kitewright Core)"),
-    "mount_plate": (27, "Payload mount (Kitewright Core)"),
+    "core_deck": (1, "Core deck doubler"),
+    "core": (26, "Kitewright Core (plate, spacers, lid)"),
+    "gnss": (26, "GNSS mast on the hatch (Kitewright Core receiver)"),
+    "mount_plate": (27, "Core rail, locking pins and pigtail (Kitewright Core)"),
     "packs": (28, "ColdCell packs"),
-    "payload": (None, "Payload, 1 kg (LakeWatch envelope)"),
+    "payload": (None, "Payload, 1 kg, on its payload shoe (LakeWatch envelope)"),
 }
 
 # How each part is made: key -> (process, material)
@@ -434,10 +461,12 @@ MAKE = {
 
 # Masses of bought parts and Kitewright Core items (kg), per unit
 BOUGHT_MASS = {
-    "mounts": 0.040, "escs": 0.045, "motors": 0.285, "props": 0.055, "cruise_motor": 0.195,
-    "cruise_prop": 0.045, "pitot": 0.030, "core": 0.700, "gnss": 0.080, "mount_plate": 0.120,
+    "mounts": 0.035, "escs": 0.045, "motors": 0.285, "props": 0.055, "cruise_motor": 0.195,
+    "cruise_prop": 0.045, "pitot": 0.030, "core": 0.990, "gnss": 0.030, "mount_plate": 0.0,   # Core 0.99 kg with rail and pins (Core R9, 10A)
     "packs": 1.400, "payload": 1.000, "wing_bolts": 0.004, "pbolts": 0.012, "servos": 0.035,
     "harness": 0.300, "cruise_esc": 0.060,
+    "core_leads": 0.124,   # four 8 AWG leads with AS150 plugs, now supplied by the frame (Core decision 33B)
+    "ant_leads": 0.030,    # three SMA extension leads: the Core's antennas to the hatch (decision 10A)
 }
 
 
@@ -494,6 +523,13 @@ def check(P=PARAMS, verbose=True):
         problems.append("lift and cruise propeller discs too close")
     if D["rear_disc_to_te"] < 30 or D["front_disc_to_le"] < 30:
         problems.append("lift propeller disc over the wing")
+    # 22 in propellers (KWR-DDR-003): the larger discs must still clear the fuselage side and the stabiliser
+    if D["lift_disc_to_fus"] < 50:
+        problems.append(f"lift disc only {D['lift_disc_to_fus']:.0f} mm from the fuselage side")
+    if D["rear_disc_to_stab"] < 50:
+        problems.append(f"rear lift disc only {D['rear_disc_to_stab']:.0f} mm from the stabiliser")
+    if P["lift_motor_d"] > 64.0:
+        problems.append("lift motor wider than the 64 mm motor mount top plate")
     lengths = {"wing panel": P["panel_span"] + 25, "lift boom": D["boom_len"],
                "tail boom with tail": P["tail_boom_x"][1] - P["tail_boom_x"][0] + 20,
                "fuselage with nose": P["fus_len"] + P["nose_len"] + P["cruise_motor_l"] + 12}
@@ -535,7 +571,7 @@ def export(P=PARAMS):
 if __name__ == "__main__":
     D = derived()
     for k in ("span", "wing_area_m2", "mac", "x_cg", "aspect_ratio", "motor_x", "boom_len", "disc_below_wing_top",
-              "front_disc_to_le", "rear_disc_to_te", "lift_to_cruise_disc_y", "rear_disc_to_stab", "tail_arm", "vh", "vv",
+              "front_disc_to_le", "rear_disc_to_te", "lift_to_cruise_disc_y", "rear_disc_to_stab", "lift_disc_to_fus", "tail_arm", "vh", "vv",
               "overall_len", "ground_to_payload", "ground_to_cruise_tip"):
         v = D[k]
         print(f"{k:24s} {v if isinstance(v, tuple) else round(v, 3)}")

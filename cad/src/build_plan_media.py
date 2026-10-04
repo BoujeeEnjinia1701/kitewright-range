@@ -14,8 +14,6 @@ from build_views import Part, overview, step, joint, component_sheet  # noqa: E4
 from model import PARAMS as P, build_parts, derived, box, chord, le_x  # noqa: E402
 
 DATE = "2026-10-03"
-# making sketches changed by the round 2 requirement decisions (KWR-DDR-003)
-REV_P2 = {"KWR-DWG-105", "KWR-DWG-106", "KWR-DWG-108", "KWR-DWG-109"}
 OUT = ROOT / "docs" / "05-build-plan"
 D = derived(P)
 m = build_parts(P)
@@ -43,11 +41,12 @@ lx0, lx1 = D["leg_x"]
 # ---------------------------------------------------------------- overview, in build order
 GROUPS = [
     ("Fuselage box", comp("fus"), COL["ply"], (0, 0, 0)),
+    ("Core deck doubler", comp("core_deck"), COL["ply"], (0, 0, 260)),
     ("Tail boom socket", comp("socket"), COL["print"], (0, 0, 120)),
     ("Nose cone and cruise motor mount", comp("nose"), COL["print"], (-200, 0, 0)),
     ("Cruise motor and folding propeller", comp("cruise_motor", "cruise_prop"), COL["elec"], (-420, 0, 0)),
-    ("Kitewright Core avionics", comp("core"), COL["core"], (0, 0, 450)),
-    ("Payload mount", comp("mount_plate"), COL["metal"], (0, 0, -160)),
+    ("Kitewright Core, hung under the floor", comp("core"), COL["core"], (0, 0, -220)),
+    ("Core rail, locking pins and pigtail (Core)", comp("mount_plate"), COL["metal"], (0, 0, -340)),
     ("Tail boom", comp("tail_boom"), COL["carbon"], (250, 0, 0)),
     ("Tail mount", comp("tail_mount"), COL["print"], (420, 0, -60)),
     ("Stabiliser and fin", comp("stab", "fin"), COL["foam"], (420, 0, 160)),
@@ -84,13 +83,16 @@ def do_sheets():
             f"Drill the wing bolt hole 5.5, centre {P['wing_bolt_x']:.0f} back and {P['fus_z0'] + P['fus_h'] - P['wing_bolt_z']:.0f} down; same on both sides.",
             f"Drill the rear wall 20.5 for the tail boom, {P['fus_z0'] + P['fus_h'] - P['tail_z']:.0f} down from the rim, on the centre line.",
             "Glue on a flat board with a square; check both joiner holes line up with a straight 20 mm rod.",
-            "Glass the outside with 80 g/m2 cloth; four M4 inserts in the floor for the payload mount.",
+            f"Floor: cut the Kitewright Core's 200 x 112 lid opening centred {D['x_cg']:.0f} back, and four 4.3 holes on a 220 x 130 pattern round it.",
+            "Bond the 6 mm birch Core deck doubler (300 x 150, same opening and holes, M4 T-nuts) on the floor inside.",
+            "Glass the outside with 80 g/m2 cloth; keep the floor flat under the Core's four spacers.",
         ], fus_nb),
         ("KWR-DWG-102", "hatch", "Hatch", "3 mm poplar lite-ply", [
             f"Plate {P['fus_len']:.0f} x {P['fus_w']:.0f} x 3; sits on the side walls and bulkheads.",
             "Glue a 20 mm tongue under the front edge that slides under a lip on the firewall.",
             "One M4 nylon thumb screw at the back into a captive nut on the rear wall.",
-            f"8.5 mm hole for the GNSS mast, {P['gnss_x']:.0f} back from the front edge, on the centre line.",
+            f"8.5 mm hole for the GNSS mast, {P['gnss_x']:.0f} back from the front edge, on the centre line; the Core's GNSS receiver sits on top.",
+            "Three 6.5 mm holes beside the mast for the Core's antennas on SMA extension leads.",
             "Cut a slot for the lockable arming switch next to the mast (see the harness plan).",
         ], [part("fus", "", "#ccc"), part("gnss", "", "#ccc")]),
         ("KWR-DWG-103", "nose", "Nose cone and cruise motor mount", "Printed ASA, 4 perimeters, 10 to 25 % gyroid infill", [
@@ -168,14 +170,16 @@ def do_sheets():
             "Bond to the stabiliser and tail mount; check it is square to the stabiliser.",
         ], [part("stab", "", "#ccc"), part("tail_mount", "", "#ccc")]),
     ]
+    R3 = {"KWR-DWG-101": "KWR-DDR-004: 156 wide, Core opening and doubler, bulkhead 645",
+          "KWR-DWG-102": "KWR-DDR-004: 156 wide, antenna holes"}
     for row in S:
         dwg, key, title, mat, notes, nb = row[:6]
         shape = row[6] if len(row) > 6 else m[key]
         pt = Part(title, shape, "#0F766E")
         kw = {}
-        if dwg in REV_P2:
-            kw = dict(rev="P2", revisions=[("P1", "Making sketch for the prototype build plan", "2026-10-03", "AC"),
-                                           ("P2", "KWR-DDR-003: 22 in propellers, booms 490 out and 1,142 long", DATE, "AC")])
+        if dwg in R3:
+            kw = dict(rev="P2", revisions=[("P1", "Making sketch for the prototype build plan", DATE, "AC"),
+                                           ("P2", R3[dwg], "2026-10-04", "AC")])
         component_sheet(pt, nb, "Kitewright Range", dwg, f"Kitewright Range: {title.lower()} making sketch", mat, notes, DATE, **kw)
         print("sheet", dwg)
 
@@ -191,23 +195,23 @@ def do_joints():
             Part("Joiner tube", win("joiner", 300, 640, 0, 200, 290, 350), "#374151"),
             Part("Wing bolt", m["wing_bolts"] & box(500, 600, 0, 200, 300, 350), COL["steel"])]),
         ("joint-02.png", "Boom pylon: through-bolts and clamp caps", "+Y", [
-            Part("Wing panel", win("wing_r", 320, 640, 400, 580, 290, 350), COL["foam"]),
+            Part("Wing panel", win("wing_r", 320, 640, 420, 520, 290, 350), COL["foam"]),
             Part("Boom pylon", m["pylon_r"], COL["print"]),
             Part("Pylon bolts with washers", m["pbolts_r"], COL["steel"]),
             Part("Clamp caps", m["caps_r"], "#115E59"),
-            Part("Lift boom", win("boom_r", 320, 540, 400, 580, 180, 230), COL["carbon"])]),
+            Part("Lift boom", win("boom_r", 320, 540, 420, 520, 180, 230), COL["carbon"])]),
         ("joint-03.png", "Lift motor on the boom end", None, [
-            Part("Lift boom", win("boom_r", mx0 - 45, mx0 + 170, 400, 580, 180, 230), COL["carbon"]),
-            Part("Motor mount", m["mounts_r"] & box(mx0 - 30, mx0 + 30, 400, 580, 150, 260), COL["metal"]),
-            Part("Lift motor", m["motors_r"] & box(mx0 - 40, mx0 + 40, 400, 580, 200, 300), COL["elec"]),
-            Part("Propeller hub", m["props_r"] & box(mx0 - 60, mx0 + 60, 400, 580, 200, 300), "#374151"),
-            Part("ESC under the boom", m["escs_r"] & box(mx0, mx0 + 200, 400, 580, 150, 200), "#7C3AED")]),
+            Part("Lift boom", win("boom_r", mx0 - 45, mx0 + 170, 420, 520, 180, 230), COL["carbon"]),
+            Part("Motor mount", m["mounts_r"] & box(mx0 - 30, mx0 + 30, 420, 520, 150, 260), COL["metal"]),
+            Part("Lift motor", m["motors_r"] & box(mx0 - 40, mx0 + 40, 420, 520, 200, 300), COL["elec"]),
+            Part("Propeller hub", m["props_r"] & box(mx0 - 60, mx0 + 60, 420, 520, 200, 300), "#374151"),
+            Part("ESC under the boom", m["escs_r"] & box(mx0, mx0 + 200, 420, 520, 150, 200), "#7C3AED")]),
         ("joint-04.png", "Landing leg on the boom", "+Y", [
-            Part("Lift boom", win("boom_r", lx0 - 40, lx0 + 40, 400, 580, 180, 230), COL["carbon"]),
-            Part("Leg clamp", m["legclamps_r"] & box(lx0 - 20, lx0 + 20, 400, 580, 0, 240), COL["print"]),
-            Part("Carbon rod", m["legrods_r"] & box(lx0 - 20, lx0 + 20, 400, 580, 0, 240), COL["carbon"]),
-            Part("Fairing", m["legfair_r"] & box(lx0 - 20, lx0 + 20, 400, 580, 0, 240), COL["metal"]),
-            Part("Foot", m["feet_r"] & box(lx0 - 20, lx0 + 20, 400, 580, 0, 240), COL["tpu"])]),
+            Part("Lift boom", win("boom_r", lx0 - 40, lx0 + 40, 420, 520, 180, 230), COL["carbon"]),
+            Part("Leg clamp", m["legclamps_r"] & box(lx0 - 20, lx0 + 20, 420, 520, 0, 240), COL["print"]),
+            Part("Carbon rod", m["legrods_r"] & box(lx0 - 20, lx0 + 20, 420, 520, 0, 240), COL["carbon"]),
+            Part("Fairing", m["legfair_r"] & box(lx0 - 20, lx0 + 20, 420, 520, 0, 240), COL["metal"]),
+            Part("Foot", m["feet_r"] & box(lx0 - 20, lx0 + 20, 420, 520, 0, 240), COL["tpu"])]),
         ("joint-05.png", "Tail boom in its socket", "+Y", [
             Part("Fuselage rear", win("fus", 600, 760, -80, 80, 190, 350), COL["ply"]),
             Part("Tail boom socket", m["socket"], COL["print"]),
@@ -222,12 +226,13 @@ def do_joints():
             Part("Nose cone", m["nose"], COL["print"]),
             Part("Cruise motor", m["cruise_motor"], COL["elec"]),
             Part("Folding propeller hub", m["cruise_prop"] & box(-130, -80, -40, 40, 230, 310), "#374151")]),
-        ("joint-08.png", "Battery bays and Core avionics", "+Y", [
-            Part("Fuselage (cut)", win("fus", 0, 600, -80, 80, 190, 350), COL["ply"]),
+        ("joint-08.png", "Battery bays and the Kitewright Core under the floor", "+Y", [
+            Part("Fuselage (cut)", win("fus", 0, 700, -90, 90, 140, 350), COL["ply"]),
+            Part("Core deck doubler", m["core_deck"], "#B45309"),
             Part("ColdCell packs", m["packs"], COL["pack"]),
             Part("Joiner tube", win("joiner", 380, 460, -70, 70, 300, 350), "#374151"),
-            Part("Kitewright Core avionics", m["core"], COL["core"]),
-            Part("Payload mount", m["mount_plate"], COL["metal"])]),
+            Part("Kitewright Core", m["core"], COL["core"]),
+            Part("Core rail and pins", m["mount_plate"], COL["metal"])]),
     ]
     for fn, title, cut, parts in J:
         joint(parts, OUT / fn, f"Kitewright Range: {title}", cut=cut)
@@ -241,8 +246,8 @@ def do_steps():
     sock = G("Tail boom socket", "socket", e=(0, 0, 200))
     nose = G("Nose cone", "nose", e=(-250, 0, 0))
     cru = G("Cruise motor and propeller", "cruise_motor", "cruise_prop", c=COL["elec"], e=(-300, 0, 0))
-    core = G("Kitewright Core avionics", "core", c=COL["core"], e=(0, 0, 350))
-    mnt = G("Payload mount", "mount_plate", c=COL["metal"], e=(0, 0, -200))
+    core = G("Core deck doubler", "core_deck", c="#B45309", e=(0, 0, 300))
+    mnt = G("Kitewright Core with its rail and pins", "core", "mount_plate", c=COL["core"], e=(0, 0, -250))
     tb = G("Tail boom", "tail_boom", c=COL["carbon"], e=(400, 0, 0))
     tail = G("Tail mount, stabiliser and fin", "tail_mount", "stab", "fin", c=COL["print"], e=(350, 0, 0))
     wr = G("Right wing panel", "wing_r", "ail_r", "spar_r", c="#CBD5E1")
@@ -265,8 +270,8 @@ def do_steps():
         ("Tail boom socket into the fuselage", [fus], [sock]),
         ("Nose cone onto the firewall", [fus, sock], [nose]),
         ("Cruise motor and folding propeller onto the nose", [fus, sock, nose], [cru]),
-        ("Kitewright Core avionics into the front bay", [fus, sock, nose, cru], [core]),
-        ("Payload mount under the fuselage", [fus, sock, nose, cru, core], [mnt]),
+        ("Core deck doubler onto the floor (M4 T-nuts)", [fus, sock, nose, cru], [core]),
+        ("Kitewright Core under the floor at the CG, lid up through the opening", [fus, sock, nose, cru, core], [mnt]),
         ("Tail boom into the socket", [fus, sock, nose, cru, core, mnt], [tb]),
         ("Tail mount, stabiliser and fin onto the boom", [fus, sock, nose, cru, core, mnt, tb], [tail]),
         ("Boom pylon onto each wing panel (right shown)", [wr], [pyl]),
@@ -274,10 +279,10 @@ def do_steps():
         ("Lift booms into the pylons, clamp caps on", [fus, nose, cru, mnt, tb, tail, wings], [booms]),
         ("Motor mounts, ESCs and lift motors onto the booms", [fus, nose, cru, mnt, tb, tail, wings, booms], [mot]),
         ("Landing legs onto the booms", [fus, nose, cru, mnt, tb, tail, wings, booms, mot], [legs]),
-        ("ColdCell packs into the bays", [fus, nose, cru, mnt, tb, tail, wings, booms, mot, legs], [packs]),
-        ("Hatch and GNSS mast", [fus, nose, cru, mnt, tb, tail, wings, booms, mot, legs, packs], [hatch]),
+        ("ColdCell packs: one in the nose bay, one on the doubler behind the Core lid", [fus, nose, cru, mnt, tb, tail, wings, booms, mot, legs], [packs]),
+        ("Hatch, GNSS mast and the Core's antennas", [fus, nose, cru, mnt, tb, tail, wings, booms, mot, legs, packs], [hatch]),
         ("Lift propellers and pitot probe (at the propeller safety stop)", [fus, nose, cru, mnt, tb, tail, wings, booms, mot, legs, hatch], [props]),
-        ("Payload onto the mount", [fus, nose, cru, tb, tail, wings, booms, mot, legs, hatch, props, mnt], [pay]),
+        ("Payload shoe onto the Core rail from the tail", [fus, nose, cru, tb, tail, wings, booms, mot, legs, hatch, props, mnt], [pay]),
     ]
     only = [int(a) for a in sys.argv[2:]] if len(sys.argv) > 2 else None
     for i, (title, done, new) in enumerate(S, 1):

@@ -26,6 +26,7 @@ A = {  # assumptions
     "skin_tail": 0.18,
     "ply": 520.0,               # kg/m3, mix of 3 mm poplar lite-ply (450) and 6 mm birch ply (680) in the box
     "lite_ply": 450.0,          # kg/m3, poplar lite-ply hatch
+    "birch": 680.0,             # kg/m3, 6 mm birch aircraft plywood (Core deck doubler, decision 10A)
     "fus_skin": 0.20,           # kg/m2 glass on the fuselage outside
     "carbon": 1550.0,           # kg/m3
     # printed parts: (wall thickness mm, infill fraction, material density kg/m3)
@@ -37,16 +38,14 @@ A = {  # assumptions
     "cf": 0.0060, "ff_wing": 1.25, "ff_tail": 1.20, "interference": 1.15,
     "eta_prop_cruise": 0.65, "eta_drive_cruise": 0.85,
     "fm": 0.65, "eta_drive_hover": 0.82,
-    "lift_thrust_sl_n": 68.7,   # 7.0 kgf maker-class static thrust per motor, 5215-class, 22 in, 6S, sea level (KWR-DDR-003)
-    "cell_wh": 5.0 * 3.6,       # 5.0 Ah high-rate 21700 cells (KWR-DDR-003)
-    "cells_per_pack": 18, "packs": 2,
+    "lift_thrust_sl_n": 68.7,   # 7.0 kgf maker static thrust per motor, 5215 class, 22 x 7 in, 6S, sea level (KWR-DDR-003)
+    "cell_wh": 5.0 * 3.6, "cells_per_pack": 18, "packs": 2,   # 21700 cells of 5.0 Ah (KWR-DDR-003)
     "usable_frac": 0.90, "cold_frac": 0.95, "reserve": 0.20,
     "p_systems_w": 38.0,        # avionics 15, payload 10, pack heaters in flight 10, servos 3
     "vtol_s": 125.0, "vtol_spike": 1.20, "climb_m": 400.0, "climb_ms": 2.5,
     "n_limit": 2.5,             # limit load factor in cruise (gusts and turns)
     "sigma_carbon_mpa": 600.0,  # allowable bending stress, pultruded or roll-wrapped carbon tube
     "payload_kg": 1.0,
-    "core_leads_kg": 0.124,     # 8 AWG pack input and frame output leads with four AS150 plugs, moved from the Core to this harness (Core decision 17 B, KWC-DDR-003)
 }
 
 
@@ -72,7 +71,9 @@ def masses(m, packs=None, cell_mass=None, airframe_factor=1.0):
     for k, s in m.items():
         base = k.rsplit("_", 1)[0] if k[-2:] in ("_l", "_r") else k
         if base == "fus":
-            kg = vol_m3(s) * A["ply"] + 0.33 * A["fus_skin"]
+            kg = vol_m3(s) * A["ply"] + 0.35 * A["fus_skin"]        # 0.35 m2 of glass outside the 156 mm box (0.33 at 140 mm)
+        elif base == "core_deck":
+            kg = vol_m3(s) * A["birch"]
         elif base == "hatch":
             kg = vol_m3(s) * A["lite_ply"]
         elif base in ("wing", "ail"):
@@ -103,10 +104,11 @@ def masses(m, packs=None, cell_mass=None, airframe_factor=1.0):
         out.append((k, kg, centroid_x(s)))
     D = derived(P)
     out.append(("harness", BOUGHT_MASS["harness"], D["x_cg"]))
-    out.append(("Core power leads in the harness", A["core_leads_kg"], D["x_cg"]))
     out.append(("servos, ailerons", 2 * BOUGHT_MASS["servos"], P["spar_x"] + 120))
     out.append(("servos, tail", 2 * BOUGHT_MASS["servos"], P["stab_le"] + 40))
     out.append(("cruise ESC", BOUGHT_MASS["cruise_esc"], 30.0))
+    out.append(("Core power leads", BOUGHT_MASS["core_leads"], D["x_cg"] - 100.0))   # to the Core's rear grommets
+    out.append(("Antenna extension leads", BOUGHT_MASS["ant_leads"], P["gnss_x"]))
     return out
 
 
@@ -115,7 +117,7 @@ def aero(mass, D, rho=A["rho_5000"], extra_cda=0.0):
     W = mass * G
     # drag areas CdA (m2), each with its basis
     cda = {
-        "fuselage and nose (0.021 m2 frontal, Cd 0.35)": 0.140 * 0.150 * 0.35,
+        "fuselage and nose (frontal, Cd 0.35)": P["fus_w"] / 1000 * P["fus_h"] / 1000 * 0.35,
         "wing (wetted 2.05 S, Cf, form factor)": 2.05 * S * A["cf"] * A["ff_wing"],
         "tail surfaces (wetted 2.05 S)": 2.05 * (D["stab_area_m2"] + D["fin_area_m2"]) * A["cf"] * A["ff_tail"],
         "booms (wetted, Cf)": 2 * math.pi * 0.025 * D["boom_len"] / 1000 * 2 * A["cf"],
@@ -123,8 +125,9 @@ def aero(mass, D, rho=A["rho_5000"], extra_cda=0.0):
         "lift motors, mounts, ESCs (frontal, Cd 0.8)": 4 * (P["lift_motor_d"] / 1000 * P["lift_motor_h"] / 1000 + 0.040 * 0.045) * 0.8,
         "stopped lift propellers and hubs": 4 * (0.030 * 0.010 + 0.036 * 0.006) * 1.0,
         "leg fairings and feet": 4 * (0.016 * 0.143 * 0.25 + 0.036 * 0.010 * 0.8),
-        "payload (Cd 0.4 on 0.009 m2)": 0.090 * 0.100 * 0.40,
-        "payload mount, GNSS mast, pitot": 0.0012,
+        "payload (Cd 0.4 on 0.0088 m2)": P["payload"][1] / 1000 * P["payload"][2] / 1000 * 0.40,
+        "Core underside: plate, rail, shoe (0.150 x 0.024 m, Cd 0.5) and two pin knobs": 0.150 * 0.024 * 0.5 + 2 * 0.018 * 0.024 * 1.0,
+        "GNSS mast, pitot": 0.0006,
         "tail boom (wetted, Cf)": math.pi * 0.020 * 0.85 * A["cf"],
     }
     cda_total = (sum(cda.values()) + extra_cda) * A["interference"]
@@ -223,16 +226,13 @@ def main(verbose=True):
     cost, _ = bom_cost()
     a, h = E["aero"], E["hover"]
 
-    # options for the decisions for Amish (same geometry, mass and energy changed)
-    # Round 2 decisions (KWR-DDR-003) are in the design above: 22 in propellers on 5215-class motors
-    # and 5.0 Ah cells. The options below are for the requirement still not met (R2), on that design.
+    # further options for R2 and R7 after the 2026-10-03 decisions (same geometry, mass and energy changed)
     opt = {}
-    opt["A: design as decided"] = (mtow, pack_wh, 2, 0.0)
-    opt["B: two 6S4P packs of 5.0 Ah cells"] = (mtow + 2 * 0.44, pack_wh * 4 / 3, 2, 2 * 350.0 / 3)
+    pk = BOUGHT_MASS["packs"]
+    opt["B: two 6S4P packs of 5.0 Ah cells"] = (mtow + 2 * 0.44, pack_wh * 4 / 3, 2, 2 * 120.0)
     lite = sum(kg for _, kg, _ in masses(m, airframe_factor=0.65)) - (sum(kg for _, kg, _ in items) - mtow)
-    opt["C: moulded carbon airframe"] = (lite, pack_wh, 2, 1200.0)
-    opt["D: moulded carbon airframe and two 6S4P packs of 5.0 Ah cells"] = (lite + 2 * 0.44, pack_wh * 4 / 3, 2,
-                                                                           1200.0 + 2 * 350.0 / 3)
+    opt["E: moulded carbon airframe"] = (lite, pack_wh, 2, 1200.0)
+    opt["F: moulded carbon airframe and two 6S4P packs"] = (lite + 2 * 0.44, pack_wh * 4 / 3, 2, 1200.0 + 240.0)
     opt_res = {}
     for name, vals in opt.items():
         mm, wh, n, dc = vals[:4]

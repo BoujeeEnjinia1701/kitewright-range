@@ -1,71 +1,5 @@
 # Review note: Kitewright Range
 
-## Session 2026-10-03: round 2 requirement decisions applied
-
-Amish, 2026-10-03: "i approve all of the 47 recommendations provided by you. Execute them." For this repo that decides O1 to O4 as recommended, recorded in `docs/decisions/0003-requirement-decisions-round2.md` (KWR-DDR-003). O3's recommendation was "A, decided together with O2; B if O1-B is chosen"; O1-B is chosen, so O3 is applied as its option B, the combined effect of O1-B and O2-A (about 45.0 km, +USD 280, +0.40 kg combined). It needs no change of its own. TRL 3 scope only: nothing built, bought or tested.
-
-### What was done
-
-- `cad/src/model.py`: lift propellers 20 in to 22 in (558.8 mm) on 5215-class motors (envelope 62 x 35 mm and 285 g, estimates; propellers 55 g; mounts 40 g); booms 20 mm further out (490 mm from the centre line) and 50 mm longer (1,142 mm), motors 531 mm ahead of and behind the centre of gravity. Constructability checks pass: 72 solids in 48 parts, no overlaps, nothing floating, discs 78 mm below the wing-top plane (rule 70 mm), lift discs 33 mm clear of the cruise propeller disc, every part fits the 1.3 m case.
-- `docs/04-calcs/sizing.py`: thrust 68.7 N (7.0 kgf, maker-class estimate), 5.0 Ah cells, lift motor drag from the model envelope; the options now cover the endurance still not met on the decided design. Re-run: `results.csv` and `01-sizing.md` (KWR-CAL-001 v0.3).
-- `bom/bom.csv`: lines 12 (boom tube 1,200 mm, USD 52), 18 (mount for a 5215-class motor), 20 (5215-class motor, USD 148), 21 (22 in propeller, USD 50) and 28 (ColdCell pack of 5.0 Ah cells, 324 Wh, USD 350). All new prices are estimates derived from the lines they replace.
-- Regenerated with the repo's scripts: STEP and STL (`cad/step/`, `cad/stl/`); general arrangement KWR-DWG-001 Rev P3 (`cad/src/sheets.py`); making sketches KWR-DWG-105, 106, 108 and 109 at Rev P2 and all other sketches, joint close-ups, steps and overview (`cad/src/build_plan_media.py`; the joint windows were widened for the booms at 490 mm); concept media hero, cutaway, exploded, flow and blueprint KWR-DWG-010 Rev P3 (`cad/src/concept_media.py`); `media/model.glb` (about 1 MB, linear deflection 1.0 mm, angular deflection 0.35 rad) and `media/viewer.html`.
-- Documents: KWR-REQ-001 v0.4 (status only, targets unchanged), KWR-PRC-001 v0.4, KWR-PRB-001 v0.3 (propeller size and safety note), KWR-BLD-001 v0.2 (hardpoints 490 mm out, boom 1,142 mm, motor centres 1,062 mm apart, bought parts, safety note), KWR-DEC-001 v0.2 (O1 to O4 decided, O5 added, change log), README figures, `cad/src/product_model.py` docstring, `project.yaml` trl_evidence.
-- Not regenerated: `media/render-hero.png` and the other photoreal renders, `media/card.png` and `media/social-preview.png` (made on Amish's Mac from the photoreal renders).
-
-### Requirement status
-
-| ID | Before (KWR-CAL-001 v0.2) | After (KWR-CAL-001 v0.3) |
-| --- | --- | --- |
-| R1 | At risk: 31.8 % | Met on paper: 53.4 % on maker-class thrust (estimate) |
-| R2 | Not met: 31.0 min | Not met: 33.6 min |
-| R3 | At risk: 40.9 km | Met on paper: 45.0 km (12 % margin) |
-| R7 | Not met: 10.58 kg | Not met: 10.97 kg, airframe kept by decision (O4-A) |
-| R9 | Met by design: discs 81 mm below the wing-top plane | Met by design: 78 mm |
-| R10 | Met on paper: USD 3,945 | Met on paper: USD 4,225 |
-
-Other figures: hover 1,743 W and 81 A at 5,000 m (13.4 A per cell); cruise 22.3 m/s, 624 W, L/D 7.4; spar safety factor 2.9 to 2.8, lift boom 10.8 to 8.4, pylon bolts 12.5 to 9.9.
-
-### Cost
-
-Value-engineering target: USD 5,000. Estimated cost of the constructable design: USD 4,225 (USD 775 under the target), up USD 280 from USD 3,945: lift motors +USD 112, propellers +USD 40, boom tubes +USD 8, 5.0 Ah cells +USD 120. `budget_usd` is the target and is unchanged.
-
-### Decisions for Amish
-
-**O5. R2 endurance, still not met.** **Proposed, awaiting Amish.** State: 33.6 min against 45 min on the decided design; cause: 648 Wh drives a 10.97 kg aircraft with a zero-lift drag coefficient of 0.079 at 624 W in cruise, and the heavier lift system takes back part of the 5.0 Ah cells' gain.
-- A: keep the decided design for the first prototype and measure drag, mass and pack energy at TRL 4. 33.6 min; no change.
-- B: two 6S4P packs of 5.0 Ah cells. 41.9 min; +USD 233; +0.88 kg; hover margin 42.0 % (R1 still met with the 22 in propellers); R7 worse at 11.85 kg; a larger ColdCell format whose fit in the bays is unchecked.
-- C: moulded carbon wing, tail and fuselage. 37.6 min; +USD 1,200; -0.69 kg.
-- D: moulded airframe and two 6S4P packs of 5.0 Ah cells. 46.4 min, R2 met on paper; +USD 1,433; USD 5,658 in all, USD 658 over the value-engineering target.
-- **Recommendation: A** for the first prototype; D is the second-prototype path once the first one's drag and mass are measured, with B as the cheaper step if the measured drag is lower than estimated.
-
-### Safety notes
-
-- The lift propellers are now 22 in: the propeller safety stop, arming plug, lockable switch, tie-downs and 15 m keep-out zone (D9) apply unchanged; the lift discs pass 33 mm from the cruise propeller disc, so both sets of propellers stay off until that stop.
-- The packs hold about 650 Wh (was about 580 Wh): the charging rules (0 to 45 °C, fire-resistant box, never unattended) and crash-pack isolation are unchanged and apply to the 5.0 Ah cells.
-- The 53.4 % margin rests on a maker-class thrust estimate. The first free hover still waits for AltiRig thrust data at 0.736 kg/m3, ten logged tied hovers and the wing spar proof load (TRL 4 steps in the build plan's safety stop 4); the spar margin is now 2.8.
-
-### Cross-repo actions (sibling repos not edited)
-
-- ColdCell: a 6S3P pack of 5.0 Ah high-rate 21700 cells, same 138 x 75 x 82 mm and 1.40 kg, about 324 Wh, at least 14 A per cell continuous when warmed.
-- AltiRig: first job is the 5215-class motor with a 22 in propeller at 0.736 kg/m3.
-- Kitewright Core: the 6S bus now carries about 81 A in hover at 5,000 m (about 40 A per pack).
-- ColdCell (follow-up for the ColdCell repo, **Proposed, awaiting Amish**): ColdCell needs a 6S3P pack configuration of 5.0 Ah high-rate 21700 cells to match decision 21 A (O2-A), at the same 138 x 75 x 82 mm and 1.40 kg if the cells allow.
-
-### Core power leads (follows from Kitewright Core decision 17 B)
-
-- Core decision 17 B moved the four 8 AWG pack and frame power leads with AS150 plugs out of the Core into each frame's harness. Range's harness, BOM line 29, now carries them: 8 AWG red and black 2 m and four AS150 halves, +USD 60 and +0.124 kg, priced as on Kitewright Lift; `docs/04-calcs/sizing.py` carries the 0.124 kg at the centre of gravity, and build plan step 4 and section 3.14 say where they solder.
-- Re-run results (`results.csv`): take-off mass 10.97 to 11.09 kg, **R7 still not met**; hover margin 53.4 to 51.7 % (R1 still met on paper); endurance 33.6 to 32.9 min (R2 not met); range 45.0 to 44.4 km (R3 still met); estimated cost USD 4,225 to 4,285 (USD 715 under the value-engineering target).
-- Open point: the Core's pack inputs are AS150 while the ColdCell packs are specified with XT90 leads; either the ColdCell packs for Range take AS150 pigtails or the harness carries adaptors. Proposed, awaiting Amish (with the ColdCell follow-up above).
-
-### Re-render
-
-The hero geometry changed visibly: lift propellers 10 % larger in diameter, booms 50 mm longer and 20 mm further out, larger lift motors. The photoreal hero, exploded and detail views and the cards should be re-rendered on the Mac from `cad/src/product_model.py`.
-
-### Recommended next step
-
-- Amish decides O5. Then re-render the photoreal views and cards on the Mac and run the release gate. The design is ready for TRL 4 parts purchase and the AltiRig thrust test of the 5215-class motor with a 22 in propeller; that is a recommendation only, not started.
-
 ## Session 2026-09-30: scaffolded
 
 ### What was done
@@ -229,3 +163,127 @@ Kitewright Core and Kitewright Lift are being done in parallel; these shared-int
 ## 2026-10-03: photoreal renders
 
 Rendered with Blender Cycles on Amish's Mac from `cad/src/product_model.py`; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` made with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes and `render.py --check` has no FAIL.
+
+## 2026-10-03: Amish's requirement decisions carried out
+
+Amish Chadha, 2026-10-03: "i agree with all the 46 recommendations you provided. please proceed." For Kitewright Range that is 36B (O1, R1), 37A (O2 and O3, R2 and R3) and 38A (O4, R7); with Kitewright Core decision 33B, Range now supplies its own power leads from the frame to the Core. Recorded in `docs/decisions/0003-requirement-decisions.md` (KWR-DDR-003) and `docs/06-design-decisions.md` v0.2.
+
+### Changes made
+
+- **36B, R1:** 5215-class lift motors (about 285 g, 62 mm can, at least 7.0 kgf with 22 x 7 in propellers, USD 150 each) and 22 x 7 in carbon propellers (about 55 g, USD 50 each); motor mount top plate at least 64 mm across. Booms moved from 470 to 490 mm out and motors from 506 to 531 mm either side of the centre of gravity; booms 1,142 mm (were 1,092 mm), cut from 1,200 mm tube (USD 52 each). New result: **hover margin 52.0 %** at 5,000 m (target at least 30 %; met on paper, thrust still to measure in AltiRig).
+- **37A, R2 and R3:** 5.0 Ah high-rate 21700 cells in the same two 6S3P ColdCell packs, 324 Wh each, same 1.40 kg (USD 350 each). New results: **endurance 32.9 min** (target 45 min; not met, accepted for the first prototype) and **range 44.3 km** (target 40 km; met on paper).
+- **38A, R7:** airframe unchanged. New result: **take-off mass 11.07 kg** (target 8 kg; not met, weighed at TRL 4).
+- **Core power leads (Core 33B):** new BOM line 33, four 8 AWG leads with AS150 plugs, soldered to the Core's pads at integration (about 124 g, USD 60, the Core's former BOM line 21); build plan step 4 and the bought-parts table say how.
+- The recommended figures were quoted one option at a time (53.3 %; 35.6 min and 46.8 km). Taken together, with the leads (0.12 kg) and the larger motors' drag, they are 52.0 %, 32.9 min and 44.3 km. This is the combination v0.2 listed as R3 option B (45.0 km), less the leads.
+- `cad/src/model.py`: three new checks (lift disc at least 50 mm from the fuselage side, 141 mm; at least 50 mm from the stabiliser, 110 mm; motor no wider than the mount plate). All 72 solids in 48 parts pass; discs 77 mm below the wing-top plane (rule 70 mm); lift and cruise discs 33 mm apart (rule 20 mm). STEP and STL regenerated.
+- `docs/04-calcs/sizing.py` and `01-sizing.md` (KWR-CAL-001 v0.3), `results.csv`; `docs/03-requirements.md` v0.4 (status only; no requirement restated); `docs/05-build-plan.md` v0.2; `docs/02-concept.md` v0.4 and the README figures brought to v0.3 numbers; `bom/bom.csv`.
+
+### Results (KWR-CAL-001 v0.3)
+
+| Requirement | Before | After | Status |
+| --- | --- | --- | --- |
+| R1 hover margin (at least 30 %) | 31.8 % | 52.0 % | Met on paper |
+| R2 endurance (at least 45 min) | 31.0 min | 32.9 min | Not met (accepted) |
+| R3 range (at least 40 km) | 40.9 km | 44.3 km | Met on paper |
+| R4 balance | 28.4 % MAC | 27.5 % MAC | Met by design |
+| R7 take-off mass (8 kg or less) | 10.58 kg | 11.07 kg | Not met (accepted) |
+| R9 discs below wing-top plane | 81 mm | 77 mm | Met by design |
+| R10 cost | USD 3,945 | USD 4,293 | Met on paper |
+
+Value-engineering target: USD 5,000. Estimated cost of the constructable design: USD 4,293 (USD 707 under the target). Mass 11.07 kg with the 1 kg payload (0.49 kg more). Lowest structural safety factor 2.8 (wing spar at 2.5 g); lift boom 8.4 with the stronger motors.
+
+### Pictures changed
+
+- General arrangement KWR-DWG-001 Rev P3; concept blueprint KWR-DWG-010 Rev P3; hero, cutaway, exploded, flow and the glTF viewer.
+- Build plan: overview, making sketches KWR-DWG-105 (hardpoints at 490 mm), KWR-DWG-106 (pylon), KWR-DWG-108 (boom 1,142 mm) and the other sheets regenerated from the same model, the boom joints (joint-02 to joint-04) and assembly steps 8 to 16.
+
+### Appearance model
+
+- `cad/src/product_model.py` takes the 22 in propellers, larger motors and longer booms from `model.py`; the tapered blades are widened in proportion (46 mm root chord, was 42 mm). Appearance only; still recorded as proposed, awaiting Amish, with the earlier blade note. Render scenes re-exported to `/home/claude/renders/kitewright-range/` (hero, exploded, detail); the photoreal renders on the Mac need redoing to show the larger propellers.
+
+### Open decisions
+
+None. No new question needs Amish.
+
+### Safety
+
+- Larger propellers and stronger motors: fitted only at the propeller safety stop, arming plug out, tied first hovers in the 15 m keep-out zone (D9). Boom bending safety factor at full sea-level thrust is 8.4.
+- The 8 AWG Core power leads: 100 W iron, pliers on hot wire, polarity checked with a meter and opposite-gender plugs before any pack is connected.
+- Packs: unchanged rules; charge between 0 and 45 °C pack temperature in a fire-resistant box.
+
+### Cross-repo actions (sibling repos not edited)
+
+1. **ColdCell:** the Range pack is now 6S3P of high-rate 5.0 Ah 21700 cells, 324 Wh, same 138 x 75 x 82 mm and 1.40 kg, about 14 A per cell in hover at 5,000 m (USD 350 assumed).
+2. **Kitewright Core:** Range supplies the four 8 AWG leads with AS150 plugs (PACK 1, PACK 2, FRAME A, FRAME B); the Core's build plan step 9 and BOM line 21 move to the frames. Core should state the pad positions and grommets the leads pass.
+3. **Kitewright Core, mass:** Range carries 0.90 kg for the Core avionics, GNSS mast and payload mount (0.70, 0.08 and 0.12 kg); the Core's own estimate after 33B is about 0.99 kg for the same set. If it holds, Range gains about 0.09 kg: hover margin about 50.8 %, endurance about 0.3 min less; nothing changes status. The Core's deck interface (four M4 on 220 x 130 mm, 200 x 112 mm lid opening) also differs from the 180 x 110 x 60 mm envelope assumed here; to settle when the family interface is frozen.
+4. **Pack connector:** Range's ColdCell packs have XT90 leads; the Core's inputs are AS150. Recommend AS150 on the ColdCell packs family-wide so the Range harness needs no adapters.
+5. **AltiRig:** the first thrust job is now a 5215-class motor with a 22 x 7 in propeller at 0.736 kg/m3.
+6. **Kitewright Lift:** also supplies its own Core power leads under Core 33B; the lead set (8 AWG, four AS150 halves, labels) should match Range's BOM line 33.
+
+### Recommended next step
+
+- Re-render the hero, exploded and detail photoreal views on the Mac from the new scenes, then run the cards and the release gate. The design is ready for TRL 4 parts purchase and AltiRig thrust tests of the 5215-class motor with a 22 in propeller; that is a recommendation only, not started.
+
+## 2026-10-04: Amish's round-3 decisions carried out
+
+Amish Chadha (owner) on 2026-10-04: "For round 3, I agree with all your proposed recommendations". For Kitewright Range that is its share of the Kitewright family reconciliation, item 10A: AS150 plugs everywhere (Range's packs change from XT90), one mounting envelope for the Core shared with Lift with the Core's drawing as the reference, and Range recomputed with the 0.99 kg Core. Core, Lift, ColdCell, AvalancheScout and LakeWatch were brought to the same table in the same session. Recorded in `docs/decisions/0004-family-reconciliation.md` (KWR-DDR-004) and the register (`docs/06-design-decisions.md` v0.3). Nothing was committed or pushed.
+
+### Changes made
+
+- **Model** (`cad/src/model.py`, new `cad/src/core_envelope.py`): the Kitewright Core hung under the floor at the centre of gravity (four M4 on 220 x 130 mm into a new 6 mm birch Core deck doubler, lid up through a 200 x 112 mm floor opening, rail pointing aft); fuselage 156 mm wide (was 140); rear bulkhead at 645 mm (was 585); front pack in the nose bay and rear pack on the doubler behind the lid; payload envelope 140 x 88 x 100 mm on a payload shoe inside the Core's neck. All 75 solids in 49 parts pass the checks (no overlaps, nothing floating, discs 77 mm below the wing-top plane, transport lengths). STEP and STL regenerated.
+- **BOM** (`bom/bom.csv`): lines 1, 2, 26, 27, 28 and 29 changed, each with a price basis (wider sheets and doubler USD 6, antenna extension leads USD 15; AS150 at the XT90's price class).
+- **Calculations** (`docs/04-calcs/sizing.py`, `01-sizing.md` v0.4, `results.csv`): Core 0.99 kg with its rail and pins, the Core's underside drag, the wider fuselage; every section re-run.
+- Documents: `docs/03-requirements.md` v0.5 (status only; no requirement restated), `docs/05-build-plan.md` v0.3, `docs/02-concept.md` v0.5, `README.md`.
+
+### New result per requirement (KWR-CAL-001 v0.4)
+
+| Requirement | Before (v0.3) | Now | Status |
+| --- | --- | --- | --- |
+| R1 hover margin (at least 30 %) | 52.0 % | 48.3 % | Met on paper |
+| R2 endurance (at least 45 min) | 32.9 min | 30.6 min | Not met (accepted) |
+| R3 range (at least 40 km) | 44.3 km | 41.5 km | Met on paper, 4 % margin |
+| R4 balance | 27.5 % MAC | 28.3 % MAC, payload on the CG | Met by design |
+| R7 take-off mass (8 kg or less) | 11.07 kg | 11.35 kg | Not met (accepted) |
+| R9 discs below wing-top plane | 77 mm | 77 mm | Met by design |
+| R10 cost | USD 4,293 | Value-engineering target: USD 5,000. Estimated cost of the constructable design: USD 4,314 (USD 686 under the target) | Met on paper |
+
+The brief expected about 32.9 min after reconciliation. The 0.99 kg Core's mass alone would cost only about 0.3 to 0.5 min, but carrying the Core to its drawing also costs the doubler, a wider fuselage and the Core's drag under the floor: 30.6 min in all. LakeWatch's R5 is restated on this 30.6 min.
+
+### Kitewright interface table
+
+The same table stands in the review notes of Kitewright Core, Kitewright Lift, Kitewright Range, ColdCell, AvalancheScout and LakeWatch (Amish's decision 10A, 2026-10-04). The Core's drawings are the reference for the mounting envelope.
+
+| Interface | Family figure | Source |
+| --- | --- | --- |
+| Power connector | AS150 on every pack lead and on each frame's power harness (two pack inputs, two frame outputs, opposite genders); no XT60 or XT90 on the bus | Decision 10A; KWC-DDR-001, D3 |
+| Core mounting envelope and hole pattern | Core plate 240 x 150 x 2 mm hung under the frame's lower deck on four 12 mm OD x 8 mm corner spacers; four M4 holes on a 220 x 130 mm pattern; a 200 x 112 mm opening in the deck for the lid; lid 168 x 92 mm, its top 55 mm above the deck's underside (GNSS mast boss 69 mm); where a frame has no 240 mm clear above the lid, the antennas and GNSS receiver go to frame positions on extension cables; rail, pin blocks and pin knobs to 47 mm below the plate top; payload shoe 184 x 128 x 5 mm, payload neck 88 mm wide from the shoe to 30 mm below the rail lips | KWC-DWG-001 Rev P2, KWC-DWG-106 |
+| Bus voltage | 18 to 60 V at the Core's pack inputs. Lift: 14S lithium-ion, 42.0 to 58.8 V (50.4 V nominal). Range: 6S lithium-ion, 18.0 to 25.2 V (21.6 V nominal) | KWC-DDR-001, D3 |
+| Pack size and mass | Lift: two ColdCell 14S3P lithium-ion packs, 410 x 94 x 94 mm, 4.46 kg and 680 Wh each (CCL-DWG-002). Range: two 6S3P lithium-ion packs of 5.0 Ah cells, 138 x 75 x 82 mm, 1.40 kg and 324 Wh each (Range's figure; ColdCell has not yet drawn this pack) | Decision 8A; CCL-CAL-001 K; KWR-CAL-001 |
+| Core mass | 0.99 kg: avionics, radios, GNSS, rail and locking pins; packs, payload shoe and the frame's harness excluded | Core R9; KWC-DDR-003 |
+
+### Pictures changed
+
+General arrangement KWR-DWG-001 Rev P4; making sketches KWR-DWG-101 (fuselage box) and 102 (hatch) Rev P2, the others redrawn unchanged; build plan overview, all eight joints (joint-08 now the battery bays and the Core under the floor) and all sixteen steps (step 4 the doubler, step 5 the Core under the floor); concept media (hero, cutaway, exploded, flow, blueprint, `model.glb`). Looked at: joint-08. `cad/src/product_model.py` takes the Core, its rail and the doubler from `model.py`; render scenes exported to `/home/claude/renders/kitewright-range` (hero, exploded, detail). The photoreal renders, captions and cards in `media/` predate this change and need a re-run on Amish's Mac.
+
+### Open decisions
+
+None. The lower endurance and range keep their status (R2 not met and accepted, R3 met on paper), so nothing new needs Amish.
+
+### Safety
+
+- The Core's pin knobs hang 140 mm and the payload 80 mm above the ground on the landing feet: land only on clear ground, and walk the aircraft round before arming.
+- The Core power leads are soldered with every pack disconnected; polarity checked at each AS150 plug with a meter before the first pack goes on.
+- Packs: unchanged rules; charge between 0 and 45 °C pack temperature in a fire-resistant box.
+
+### Cross-repo actions
+
+- **ColdCell:** the Range pack (6S3P of 5.0 Ah 21700 cells, 138 x 75 x 82 mm, 1.40 kg, 324 Wh, AS150) is still Range's figure; ColdCell has not drawn it. It is listed so in the interface table.
+- **LakeWatch:** plans its surveys on 30.6 min (its R5, restated in its own repository the same day).
+
+### Recommended next step
+
+Re-render the hero, exploded and detail photoreal views on the Mac from the new scenes. The design is ready for TRL 4 parts purchase and AltiRig thrust tests; a recommendation only, not started.
+
+## 2026-10-04: photoreal renders redone after the round-2 and round-3 decisions
+
+Views: hero, exploded, detail; cards regenerated; image_qc passes and `render.py --check` has no FAIL.

@@ -1,4 +1,4 @@
-"""Kitewright Range concept media (TRL 3, constructable design KWR-DDR-002 with KWR-DDR-003), generated from the model.
+"""Kitewright Range concept media (TRL 3, constructable design KWR-DDR-002 and KWR-DDR-003), generated from the model.
 
 Run from the repo root:  python cad/src/concept_media.py
 Takes every part from cad/src/model.py and renders the media set with .kit/concept.py: hero with the

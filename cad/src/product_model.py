@@ -1,12 +1,12 @@
-"""Kitewright Range product appearance model (build123d), TRL 3, constructable design (KWR-DDR-002).
+"""Kitewright Range product appearance model (build123d), TRL 3, constructable design (KWR-DDR-002, KWR-DDR-003).
 
 Finished-product look for photoreal renders: white glassed foam wing and tail with teal ailerons, a light
 grey glassed fuselage with its hatch, teal printed nose cone, pylons, tail mount and clamps, charcoal
 carbon booms, spars and tail boom, orange lift motors with aluminium tube mounts, tapered black
-22 in lift propellers parked fore and aft, the folding cruise propeller at the nose, the GNSS mast,
-the heated pitot on the left wing, faired landing legs with rubber feet and the 1 kg payload under
-the fuselage. Inside (exploded view): the two ColdCell packs, the Kitewright Core avionics and the
-wing joiner. Context: a 1.75 m standing mannequin beside the right wing tip, behind the aircraft as
+22 in lift propellers on 5215-class motors parked fore and aft, the folding cruise propeller at the nose, the GNSS mast,
+the heated pitot on the left wing, faired landing legs with rubber feet, the Kitewright Core hung under
+the fuselage floor to the family envelope (2026-10-04, decision 10A) and the 1 kg payload on its shoe under
+it. Inside (exploded view): the two ColdCell packs, the Core deck doubler and the wing joiner. Context: a 1.75 m standing mannequin beside the right wing tip, behind the aircraft as
 seen from the hero camera (front left).
 
 Every part and dimension comes from cad/src/model.py (build_parts, PARAMS, derived); the only
@@ -31,7 +31,8 @@ RENDER_VIEWS = [
              "1.75 m person standing beyond the far (right) wing tip for scale"},
     {"name": "exploded", "groups": ["shell", "internal"], "explode": True, "el": 28, "az": -140,
      "note": "Exploded view from the front left and above (about 28 deg elevation): wing panels and booms out to the "
-             "sides, hatch, packs and Kitewright Core lifted out of the fuselage, tail pulled aft, payload below"},
+             "sides, hatch, packs and Core deck doubler lifted out of the fuselage, tail pulled aft, the Kitewright Core, "
+             "its rail and the payload below"},
     # render with --focus on the left front lift motor and pylon (see docs/REVIEW.md)
     {"name": "detail", "groups": ["shell"], "explode": False, "el": 14, "az": -125,
      "note": "Detail from the front left, slightly above (about 14 deg elevation), close on the left boom: printed "
@@ -47,7 +48,7 @@ C_ORANGE = "#C2410C"
 C_BLACK = "#16181C"
 
 
-def _blades(cx, cy, z0, radius, hub_r=15.0, c_root=42.0, c_tip=16.0, t=6.0, along="x"):
+def _blades(cx, cy, z0, radius, hub_r=15.0, c_root=46.0, c_tip=17.0, t=6.0, along="x"):
     """Two tapered blades parked fore and aft (along X), or vertical (along Z for the cruise propeller)."""
     out = []
     for sgn in (1, -1):
@@ -116,9 +117,10 @@ def product_parts(P=PARAMS):
     blades = _blades(xs - 9, 0, P["thrust_line_z"], P["cruise_prop_d"] / 2, hub_r=14, c_root=30, c_tip=14, t=6, along="z")
     add("Cruise folding propeller", Compound([spinner, blades]), C_BLACK, "plastic", 23, "shell", (-560, 0, 0))
     add("Heated pitot probe", m["pitot"], C_ALU, "metal", 25, "shell", (-200, -520, 160))
-    add("Kitewright Core avionics", m["core"], "#16A34A", "plastic", 26, "internal", (0, 0, 520))
+    add("Kitewright Core (plate, spacers, lid)", m["core"], "#16A34A", "plastic", 26, "shell", (0, 0, -240))
+    add("Core deck doubler", m["core_deck"], "#C9A46B", "wood", 1, "internal", (0, 0, 440))
     add("GNSS mast", m["gnss"], C_BLACK, "plastic", 26, "shell", (0, 0, 640))
-    add("Payload mount", m["mount_plate"], C_ALU, "metal", 27, "shell", (0, 0, -180))
+    add("Core rail, locking pins and pigtail", m["mount_plate"], C_ALU, "metal", 27, "shell", (0, 0, -300))
     add("ColdCell packs", m["packs"], "#EA580C", "plastic", 28, "internal", (0, 0, 640))
     add("Payload, 1 kg", m["payload"], "#57534E", "plastic", None, "shell", (0, 0, -380))
     # context: a standing person beyond the right wing tip, on the far side of the aircraft from the hero camera
